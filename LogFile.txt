@@ -1,0 +1,9 @@
+npm install --save -dev express, ejs, body-parser, dotenv
+
+npm install --save nodemon @babel/core @babel/node @babel/preset-env @babel/cli
+
+"start": "nodemon --exec babel-node src/server.js" in package.json
+
+npm install --save request
+
+web:node src/server.js ---> Procfile for Heroku
