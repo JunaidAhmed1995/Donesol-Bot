@@ -157,9 +157,62 @@ function callSendAPI(sender_psid, response) {
   );
 }
 
+//function for get-started and persistant Menu
+let handleInitialSetup = async (req, res) => {
+  //construct the message body
+  let request_body = {
+    get_started: {
+      payload: "GET_STARTED_PAYLOAD",
+    },
+    persistent_menu: [
+      {
+        locale: "default",
+        composer_input_disabled: false,
+        call_to_actions: [
+          {
+            type: "postback",
+            title: "Outfit suggestions",
+            payload: "Outfit",
+          },
+          {
+            type: "web_url",
+            title: "Shop Now",
+            url: "https://www.originalcoastclothing.com/",
+            webview_height_ratio: "full",
+          },
+        ],
+      },
+    ],
+  };
+
+  return new Promise((resolve, reject) => {
+    try {
+      // Send the HTTP request to the Messenger Platform
+      request(
+        {
+          uri: "https://graph.facebook.com/v11.0/me/messenger_profile",
+          qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+          method: "POST",
+          json: request_body,
+        },
+        (err, response, body) => {
+          if (!err) {
+            console.log("message sent!");
+          } else {
+            console.error("Unable to send message:" + err);
+          }
+        }
+      );
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 //now exporting functions as a object [property: value]
 module.exports = {
   test: test,
   getWebHook: getWebHook,
   postWebHook: postWebHook,
+  handleInitialSetup: handleInitialSetup,
 };
