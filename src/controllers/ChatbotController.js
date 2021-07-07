@@ -5,78 +5,67 @@ console.log("Nodemon Restarting the Project");
 
 //function for testing the port
 let test = (req, res) => {
-    return res.send("Hello Junaid Again");
-}
+  return res.send("Hello Heroku, I am successfully deployed my Node.js App");
+};
 
 // Adds support for GET requests to our webhook
 let getWebHook = (req, res) => {
-// Your verify token. Should be a random string.
-let VERIFY_TOKEN = MY_VERIFY_TOKEN;
-    
-// Parse the query params
-let mode = req.query['hub.mode'];
-let token = req.query['hub.verify_token'];
-let challenge = req.query['hub.challenge'];
-  
-// Checks if a token and mode is in the query string of the request
-if (mode && token) {
+  // Your verify token. Should be a random string.
+  let VERIFY_TOKEN = MY_VERIFY_TOKEN;
 
-  // Checks the mode and token sent is correct
-  if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-    
-    // Responds with the challenge token from the request
-    console.log('WEBHOOK_VERIFIED');
-    res.status(200).send(challenge);
-  
-  } else {
-    // Responds with '403 Forbidden' if verify tokens do not match
-    res.sendStatus(403);      
-  }
-}
-}
+  // Parse the query params
+  let mode = req.query["hub.mode"];
+  let token = req.query["hub.verify_token"];
+  let challenge = req.query["hub.challenge"];
 
-// Creates the endpoint for our webhook 
-let postWebHook = (req, res) => {
-    let body = req.body;
-
-    // Checks this is an event from a page subscription
-    if (body.object === 'page') {
-  
-      // Iterates over each entry - there may be multiple if batched
-      body.entry.forEach(function(entry) {
-  
-        // Gets the message. entry.messaging is an array, but 
-        // will only ever contain one message, so we get index 0
-        let webhook_event = entry.messaging[0];
-        console.log(webhook_event);
-      });
-  
-      // Returns a '200 OK' response to all requests
-      res.status(200).send('EVENT_RECEIVED');
+  // Checks if a token and mode is in the query string of the request
+  if (mode && token) {
+    // Checks the mode and token sent is correct
+    if (mode === "subscribe" && token === VERIFY_TOKEN) {
+      // Responds with the challenge token from the request
+      console.log("WEBHOOK_VERIFIED");
+      res.status(200).send(challenge);
     } else {
-      // Returns a '404 Not Found' if event is not from a page subscription
-      res.sendStatus(404);
+      // Responds with '403 Forbidden' if verify tokens do not match
+      res.sendStatus(403);
     }
-}
+  }
+};
+
+// Creates the endpoint for our webhook
+let postWebHook = (req, res) => {
+  let body = req.body;
+
+  // Checks this is an event from a page subscription
+  if (body.object === "page") {
+    // Iterates over each entry - there may be multiple if batched
+    body.entry.forEach(function (entry) {
+      // Gets the message. entry.messaging is an array, but
+      // will only ever contain one message, so we get index 0
+      let webhook_event = entry.messaging[0];
+      console.log(webhook_event);
+    });
+
+    // Returns a '200 OK' response to all requests
+    res.status(200).send("EVENT_RECEIVED");
+  } else {
+    // Returns a '404 Not Found' if event is not from a page subscription
+    res.sendStatus(404);
+  }
+};
 
 // Handles messages events
-function handleMessage(sender_psid, received_message) {
-
-}
+function handleMessage(sender_psid, received_message) {}
 
 // Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
-
-}
+function handlePostback(sender_psid, received_postback) {}
 
 // Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
-  
-}
+function callSendAPI(sender_psid, response) {}
 
 //now exporting functions as a object [property: value]
 module.exports = {
-    test: test,
-    getWebHook: getWebHook,
-    postWebHook: postWebHook,
-}
+  test: test,
+  getWebHook: getWebHook,
+  postWebHook: postWebHook,
+};
