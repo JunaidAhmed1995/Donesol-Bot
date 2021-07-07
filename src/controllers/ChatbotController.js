@@ -170,14 +170,15 @@ let handleInitialSetup = async (req, res) => {
         composer_input_disabled: false,
         call_to_actions: [
           {
-            type: "postback",
-            title: "Outfit suggestions",
-            payload: "Outfit",
+            type: "web_url",
+            title: "Visit Me",
+            url: "https://www.google.com/",
+            webview_height_ratio: "full",
           },
           {
             type: "web_url",
             title: "Shop Now",
-            url: "https://www.originalcoastclothing.com/",
+            url: "https://www.google.com/",
             webview_height_ratio: "full",
           },
         ],
@@ -207,7 +208,7 @@ let handleInitialSetup = async (req, res) => {
       reject(e);
     }
   });
-};
+}; //handleInitialSetup functions ENDs!
 
 //now exporting functions as a object [property: value]
 module.exports = {
