@@ -197,9 +197,9 @@ let handleInitialSetup = async (req, res) => {
         },
         (err, response, body) => {
           if (!err) {
-            console.log("message sent!");
+            console.log("setup successfully!");
           } else {
-            console.error("Unable to send message:" + err);
+            console.error("Unable to setup:" + err);
           }
         }
       );
