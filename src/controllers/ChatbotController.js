@@ -160,54 +160,55 @@ function callSendAPI(sender_psid, response) {
 //function for get-started and persistant Menu
 let handleInitialSetup = async (req, res) => {
   //construct the message body
-  let request_body = {
-    get_started: {
-      payload: "GET_STARTED_PAYLOAD",
-    },
-    persistent_menu: [
-      {
-        locale: "default",
-        composer_input_disabled: false,
-        call_to_actions: [
-          {
-            type: "web_url",
-            title: "Visit Me",
-            url: "https://www.google.com/",
-            webview_height_ratio: "full",
-          },
-          {
-            type: "web_url",
-            title: "Shop Now",
-            url: "https://www.google.com/",
-            webview_height_ratio: "full",
-          },
-        ],
-      },
-    ],
-  };
+  // let request_body = {
+  //   get_started: {
+  //     payload: "GET_STARTED_PAYLOAD",
+  //   },
+  //   persistent_menu: [
+  //     {
+  //       locale: "default",
+  //       composer_input_disabled: false,
+  //       call_to_actions: [
+  //         {
+  //           type: "web_url",
+  //           title: "Visit Me",
+  //           url: "https://www.google.com/",
+  //           webview_height_ratio: "full",
+  //         },
+  //         {
+  //           type: "web_url",
+  //           title: "Shop Now",
+  //           url: "https://www.google.com/",
+  //           webview_height_ratio: "full",
+  //         },
+  //       ],
+  //     },
+  //   ],
+  // };
 
-  return new Promise((resolve, reject) => {
-    try {
-      // Send the HTTP request to the Messenger Platform
-      request(
-        {
-          uri: "https://graph.facebook.com/v11.0/me/messenger_profile",
-          qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-          method: "POST",
-          json: request_body,
-        },
-        (err, response, body) => {
-          if (!err) {
-            return res.send("setup successfully!", response);
-          } else {
-            console.error("Unable to setup:" + err);
-          }
-        }
-      );
-    } catch (e) {
-      reject(e);
-    }
-  });
+  // return new Promise((resolve, reject) => {
+  //   try {
+  //     // Send the HTTP request to the Messenger Platform
+  //     request(
+  //       {
+  //         uri: "https://graph.facebook.com/v11.0/me/messenger_profile",
+  //         qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+  //         method: "POST",
+  //         json: request_body,
+  //       },
+  //       (err, response, body) => {
+  //         if (!err) {
+  //           return res.send("setup successfully!");
+  //         } else {
+  //           console.error("Unable to setup:" + err);
+  //         }
+  //       }
+  //     );
+  //   } catch (e) {
+  //     reject(e);
+  //   }
+  // });
+  return res.send("handle initial setup");
 }; //handleInitialSetup functions ENDs!
 
 //now exporting functions as a object [property: value]
