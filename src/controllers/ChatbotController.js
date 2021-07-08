@@ -124,7 +124,10 @@ function handlePostback(sender_psid, received_postback) {
     response = { text: "Thanks!" };
   } else if (payload === "no") {
     response = { text: "Oops, try sending another image." };
+  } else if (payload === "GET_STARTED_PAYLOAD") {
+    response = { text: "Hi, {{user_first_name}}!" };
   }
+
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
 }
@@ -158,7 +161,7 @@ function callSendAPI(sender_psid, response) {
 }
 
 //function for get-started and persistant Menu
-let handleInitialSetup = (req, res) => {
+let handleInitialSetup = async (req, res) => {
   //construct the message body
   let request_body = {
     get_started: {
@@ -200,7 +203,9 @@ let handleInitialSetup = (req, res) => {
           if (!err) {
             return res.send("setup successfully!");
           } else {
-            console.error("Unable to setup:" + err);
+            console.error(
+              "Unable to setup get-started button and persistent menu:" + err
+            );
           }
         }
       );
