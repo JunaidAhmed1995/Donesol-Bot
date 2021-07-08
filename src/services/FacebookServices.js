@@ -88,8 +88,78 @@ let getFacebookUsername = (sender_psid) => {
   });
 };
 
+//show typing animation
+let showTypingAnimation = (sender_psid) => {
+  return new Promise((resolve, reject) => {
+    try {
+      //construct the message body
+      let request_body = {
+        recipient: {
+          id: sender_psid,
+        },
+        sender_action: "typing_on",
+      };
+
+      let url = `https://graph.facebook.com/v7.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
+      // Send the HTTP request to the Messenger Platform
+      request(
+        {
+          uri: url,
+          method: "POST",
+          json: request_body,
+        },
+        (err, response, body) => {
+          if (!err) {
+            resolve("Animation is Showing!");
+          } else {
+            reject("Unable to show typing Animation" + err);
+          }
+        }
+      );
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+//marked the message seen during chat
+let markedMessageAsSeen = (sender_psid) => {
+  return new Promise((resolve, reject) => {
+    try {
+      //construct the message body
+      let request_body = {
+        recipient: {
+          id: sender_psid,
+        },
+        sender_action: "mark_seen",
+      };
+
+      let url = `https://graph.facebook.com/v7.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
+      // Send the HTTP request to the Messenger Platform
+      request(
+        {
+          uri: url,
+          method: "POST",
+          json: request_body,
+        },
+        (err, response, body) => {
+          if (!err) {
+            resolve("Message is marked as Seen!");
+          } else {
+            reject("Unable to marked message as seen" + err);
+          }
+        }
+      );
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 //now exporting functions as a object [property: value]
 module.exports = {
   getInitialSetup: getInitialSetup,
   getFacebookUsername: getFacebookUsername,
+  showTypingAnimation: showTypingAnimation,
+  markedMessageAsSeen: markedMessageAsSeen,
 };

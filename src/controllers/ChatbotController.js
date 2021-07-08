@@ -141,7 +141,13 @@ let handlePostback = async (sender_psid, received_postback) => {
 };
 
 // Sends response messages via the Send API
-let callSendAPI = (sender_psid, response) => {
+let callSendAPI = async (sender_psid, response) => {
+  //for marked message as seen
+  await FacebookService.markedMessageAsSeen(sender_psid);
+
+  //for show typing animation
+  await FacebookService.showTypingAnimation(sender_psid);
+
   // Construct the message body
   let request_body = {
     recipient: {
@@ -172,7 +178,7 @@ let callSendAPI = (sender_psid, response) => {
 let handleInitialSetup = async (req, res) => {
   try {
     await FacebookService.getInitialSetup();
-    return;
+    return res.redirect("/");
   } catch (e) {
     console.log(e);
   }
