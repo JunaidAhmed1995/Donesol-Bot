@@ -1,11 +1,12 @@
 require("dotenv").config();
 import request from "request";
+import FacebookService from "../services/FacebookServices";
 
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
-console.log("Nodemon Restarting the Project");
+const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 
 //function for testing the port
-let test = (req, res) => {
+let homePage = (req, res) => {
   return res.send("Hello Heroku, I am successfully deployed my Node.js App");
 };
 
@@ -67,7 +68,7 @@ let postWebHook = (req, res) => {
 };
 
 // Handles messages events
-function handleMessage(sender_psid, received_message) {
+let handleMessage = (sender_psid, received_message) => {
   let response;
 
   // Check if the message contains text
@@ -93,12 +94,12 @@ function handleMessage(sender_psid, received_message) {
                 {
                   type: "postback",
                   title: "Yes!",
-                  payload: "yes",
+                  payload: "YES",
                 },
                 {
                   type: "postback",
                   title: "No!",
-                  payload: "no",
+                  payload: "NO",
                 },
               ],
             },
@@ -110,30 +111,37 @@ function handleMessage(sender_psid, received_message) {
 
   // Sends the response message
   callSendAPI(sender_psid, response);
-}
+};
 
 // Handles messaging_postbacks events
-function handlePostback(sender_psid, received_postback) {
+let handlePostback = async (sender_psid, received_postback) => {
   let response;
 
   // Get the payload for the postback
   let payload = received_postback.payload;
 
   // Set the response based on the postback payload
-  if (payload === "yes") {
-    response = { text: "Thanks!" };
-  } else if (payload === "no") {
-    response = { text: "Oops, try sending another image." };
-  } else if (payload === "GET_STARTED_PAYLOAD") {
-    response = { text: "Hi, {{user_first_name}}!" };
+  switch (payload) {
+    case "YES":
+      response = { text: "Thanks!" };
+      break;
+    case "NO":
+      response = { text: "Oops, try sending another image." };
+      break;
+    case "GET_STARTED_PAYLOAD":
+      let username = await FacebookService.getFacebookUsername(sender_psid);
+      response = { text: `Hi, ${username}! Welcome to Donesol-bot` };
+      break;
+    default:
+      console.log("default block in handlePostback");
   }
 
   // Send the message to acknowledge the postback
   callSendAPI(sender_psid, response);
-}
+};
 
 // Sends response messages via the Send API
-function callSendAPI(sender_psid, response) {
+let callSendAPI = (sender_psid, response) => {
   // Construct the message body
   let request_body = {
     recipient: {
@@ -158,67 +166,21 @@ function callSendAPI(sender_psid, response) {
       }
     }
   );
-}
+};
 
-//function for get-started and persistant Menu
+//call getInitialSetup() in FacebookServices.js
 let handleInitialSetup = async (req, res) => {
-  //construct the message body
-  let request_body = {
-    get_started: {
-      payload: "GET_STARTED_PAYLOAD",
-    },
-    persistent_menu: [
-      {
-        locale: "default",
-        composer_input_disabled: false,
-        call_to_actions: [
-          {
-            type: "web_url",
-            title: "Visit Me",
-            url: "https://www.google.com/",
-            webview_height_ratio: "full",
-          },
-          {
-            type: "web_url",
-            title: "Shop Now",
-            url: "https://www.google.com/",
-            webview_height_ratio: "full",
-          },
-        ],
-      },
-    ],
-  };
-
-  return new Promise((resolve, reject) => {
-    try {
-      // Send the HTTP request to the Messenger Platform
-      request(
-        {
-          uri: "https://graph.facebook.com/v11.0/me/messenger_profile",
-          qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-          method: "POST",
-          json: request_body,
-        },
-        (err, response, body) => {
-          if (!err) {
-            return res.send("setup successfully!");
-          } else {
-            console.error(
-              "Unable to setup get-started button and persistent menu:" + err
-            );
-          }
-        }
-      );
-    } catch (e) {
-      reject(e);
-    }
-  });
-  // return res.send("handle initial setup");
+  try {
+    await FacebookService.getInitialSetup();
+    return;
+  } catch (e) {
+    console.log(e);
+  }
 }; //handleInitialSetup functions ENDs!
 
 //now exporting functions as a object [property: value]
 module.exports = {
-  test: test,
+  homePage: homePage,
   getWebHook: getWebHook,
   postWebHook: postWebHook,
   handleInitialSetup: handleInitialSetup,

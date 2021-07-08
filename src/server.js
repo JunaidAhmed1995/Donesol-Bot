@@ -19,5 +19,5 @@ initRoutes(app);
 let port = process.env.PORT || 8080;
 
 app.listen(port, () => {
-  console.log("App is running at port: " + port);
+  console.log(`Donesol-bot is running at the Port: ${port}`);
 });
