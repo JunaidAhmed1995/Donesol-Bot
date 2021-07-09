@@ -234,7 +234,7 @@ let welcomeNewUser = (sender_psid) => {
       };
 
       await callSendAPI(sender_psid, response1);
-      await callSendAPI(sender_psid, response2);
+      await callSendAPI(sender_psid, response1);
       await callSendAPI(sender_psid, response3);
       resolve("All Responses are send to CallSendAPI");
     } catch (e) {
