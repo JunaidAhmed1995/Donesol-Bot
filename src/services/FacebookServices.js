@@ -9,7 +9,7 @@ const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
 let getInitialSetup = () => {
   return new Promise((resolve, reject) => {
     try {
-      let url = `https://graph.facebook.com/v7.0/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`;
+      let url = `https://graph.facebook.com/v11.0/me/messenger_profile?access_token=${PAGE_ACCESS_TOKEN}`;
       //construct the message body
       let request_body = {
         get_started: {
@@ -21,30 +21,33 @@ let getInitialSetup = () => {
             composer_input_disabled: false,
             call_to_actions: [
               {
-                title: " Menu",
-                type: "nested",
-                call_to_actions: [
-                  { title: "About", type: "postback", payload: "ABOUT" },
-                  {
-                    title: "Tips",
-                    type: "nested",
-                    call_to_actions: [
-                      { title: "Hours", type: "postback", payload: "Hours" },
-                      {
-                        title: "Restroom",
-                        type: "postback",
-                        payload: "Restroom",
-                      },
-                      { title: "Other", type: "postback", payload: "Other" },
-                    ],
-                  },
-                  {
-                    title: "Leaderboard",
-                    type: "postback",
-                    payload: "Leaderboard",
-                  },
-                ],
+                type: "postback",
+                title: "Talk to an Agent",
+                payload: "TALK_TO_AGENT_PAYLOAD",
               },
+              {
+                type: "postback",
+                title: "Restart the Conversation",
+                payload: "RESTART_BOT_PAYLOAD",
+              },
+              // {
+              //   type: "nested",
+              //   title: "More Info",
+              //   call_to_actions: [
+              //     {
+              //       type: "web_url",
+              //       title: "From More Info",
+              //       url: "https://www.google.com/",
+              //       webview_height_ratio: "full",
+              //     },
+              //     {
+              //       type: "web_url",
+              //       title: "Shop Now",
+              //       url: "https://www.google.com/",
+              //       webview_height_ratio: "full",
+              //     },
+              //   ],
+              // },
             ],
           },
         ],
