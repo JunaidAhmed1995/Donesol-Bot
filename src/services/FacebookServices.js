@@ -18,41 +18,34 @@ let getInitialSetup = () => {
         persistent_menu: [
           {
             locale: "default",
-            composer_input_disabled: true,
+            composer_input_disabled: false,
             call_to_actions: [
               {
+                title: " Menu",
                 type: "nested",
-                title: "More Info",
                 call_to_actions: [
+                  { title: "About", type: "postback", payload: "ABOUT" },
                   {
-                    type: "web_url",
-                    title: "From More Info",
-                    url: "https://www.google.com/",
-                    webview_height_ratio: "full",
+                    title: "Tips",
+                    type: "nested",
+                    call_to_actions: [
+                      { title: "Hours", type: "postback", payload: "Hours" },
+                      {
+                        title: "Restroom",
+                        type: "postback",
+                        payload: "Restroom",
+                      },
+                      { title: "Other", type: "postback", payload: "Other" },
+                    ],
                   },
                   {
-                    type: "web_url",
-                    title: "Shop Now",
-                    url: "https://www.google.com/",
-                    webview_height_ratio: "full",
+                    title: "Leaderboard",
+                    type: "postback",
+                    payload: "Leaderboard",
                   },
                 ],
               },
-              {
-                type: "postback",
-                title: "Talk to an Agent",
-                payload: "TALK_TO_AGENT_PAYLOAD",
-              },
-              {
-                type: "postback",
-                title: "Restart the Conversation",
-                payload: "RESTART_BOT_PAYLOAD",
-              },
             ],
-          },
-          {
-            locale: "zh_CN",
-            composer_input_disabled: false,
           },
         ],
       };
