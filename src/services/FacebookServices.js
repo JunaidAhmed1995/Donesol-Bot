@@ -33,6 +33,7 @@ let getInitialSetup = () => {
             ],
           },
         ],
+        whitelisted_domains: ["https://donesol-bot.herokuapp.com/"],
       };
 
       // Send the HTTP request to the Messenger Platform
