@@ -3,6 +3,7 @@ import ChatbotController from "../controllers/ChatbotController";
 
 let router = express.Router();
 
+//defines all routes here
 let initRoutes = (app) => {
   router.get("/", ChatbotController.homePage);
   router.get("/webhook", ChatbotController.getWebHook);
