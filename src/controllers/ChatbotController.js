@@ -68,7 +68,7 @@ let postWebHook = (req, res) => {
 };
 
 // Handles messages events
-let handleMessage = (sender_psid, received_message) => {
+let handleMessage = async (sender_psid, received_message) => {
   let response;
 
   // Check if the message contains text
@@ -94,12 +94,12 @@ let handleMessage = (sender_psid, received_message) => {
                 {
                   type: "postback",
                   title: "Yes!",
-                  payload: "YES",
+                  payload: "YES_PAYLOAD",
                 },
                 {
                   type: "postback",
                   title: "No!",
-                  payload: "NO",
+                  payload: "NO_PAYLOAD",
                 },
               ],
             },
@@ -110,7 +110,7 @@ let handleMessage = (sender_psid, received_message) => {
   }
 
   // Sends the response message
-  callSendAPI(sender_psid, response);
+  await FacebookService.callSendAPI(sender_psid, response);
 };
 
 // Handles messaging_postbacks events
@@ -122,57 +122,58 @@ let handlePostback = async (sender_psid, received_postback) => {
 
   // Set the response based on the postback payload
   switch (payload) {
-    case "YES":
+    case "YES_PAYLOAD":
       response = { text: "Thanks!" };
       break;
-    case "NO":
+    case "NO_PAYLOAD":
       response = { text: "Oops, try sending another image." };
       break;
     case "GET_STARTED_PAYLOAD":
-      let username = await FacebookService.getFacebookUsername(sender_psid);
-      response = { text: `Hi, ${username}! Welcome to Donesol-bot` };
+      await FacebookService.welcomeNewUser(sender_psid);
       break;
     default:
       console.log("default block in handlePostback");
   }
 
   // Send the message to acknowledge the postback
-  callSendAPI(sender_psid, response);
+  if (payload !== "GET_STARTED_PAYLOAD") {
+    await FacebookService.callSendAPI(sender_psid, response);
+  }
 };
 
-// Sends response messages via the Send API
-let callSendAPI = async (sender_psid, response) => {
-  //for marked message as seen
-  await FacebookService.markedMessageAsSeen(sender_psid);
+// // Sends response messages to user via the Send API
+// let callSendAPI = async (sender_psid, response) => {
+//   //for marked message as seen
+//   await FacebookService.markedMessageAsSeen(sender_psid);
 
-  //for show typing animation
-  await FacebookService.showTypingAnimation(sender_psid);
+//   //for show typing animation
+//   await FacebookService.showTypingAnimation(sender_psid);
 
-  // Construct the message body
-  let request_body = {
-    recipient: {
-      id: sender_psid,
-    },
-    message: response,
-  };
+//   // Construct the message body
+//   let request_body = {
+//     recipient: {
+//       id: sender_psid,
+//     },
+//     message: response,
+//   };
 
-  // Send the HTTP request to the Messenger Platform
-  request(
-    {
-      uri: "https://graph.facebook.com/v7.0/me/messages",
-      qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
-      method: "POST",
-      json: request_body,
-    },
-    (err, res, body) => {
-      if (!err) {
-        console.log("message sent!");
-      } else {
-        console.error("Unable to send message:" + err);
-      }
-    }
-  );
-};
+//   // Send the HTTP request to the Messenger Platform
+//   request(
+//     {
+//       uri: "https://graph.facebook.com/v7.0/me/messages",
+//       qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+//       method: "POST",
+//       json: request_body,
+//     },
+//     (err, res, body) => {
+//       if (!err) {
+//         console.log("message sent!");
+//       } else {
+//         console.error("Unable to send message:" + err);
+//       }
+//     }
+//   );
+// };
 
 //call getInitialSetup() in FacebookServices.js
 let handleInitialSetup = async (req, res) => {
