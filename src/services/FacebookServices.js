@@ -21,16 +21,6 @@ let getInitialSetup = () => {
             composer_input_disabled: false,
             call_to_actions: [
               {
-                type: "postback",
-                title: "Talk to an Agent",
-                payload: "TALK_TO_AGENT_PAYLOAD",
-              },
-              {
-                type: "postback",
-                title: "Restart the Conversation",
-                payload: "RESTART_BOT_PAYLOAD",
-              },
-              {
                 type: "nested",
                 title: "More Info",
                 call_to_actions: [
@@ -47,6 +37,16 @@ let getInitialSetup = () => {
                     webview_height_ratio: "full",
                   },
                 ],
+              },
+              {
+                type: "postback",
+                title: "Talk to an Agent",
+                payload: "TALK_TO_AGENT_PAYLOAD",
+              },
+              {
+                type: "postback",
+                title: "Restart the Conversation",
+                payload: "RESTART_BOT_PAYLOAD",
               },
             ],
           },
