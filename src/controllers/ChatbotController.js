@@ -69,6 +69,29 @@ let postWebHook = (req, res) => {
 
 // Handles messages events
 let handleMessage = async (sender_psid, received_message) => {
+  //check is the incoming message is from Quick Reply?
+  if (
+    received_message &&
+    received_message.quick_reply &&
+    received_message.quick_reply.payload
+  ) {
+    let payload = received_message.quick_reply.payload;
+
+    switch (payload) {
+      case "CATEGORIES_PAYLOAD":
+        await FacebookService.showCategories(sender_psid);
+        break;
+      case "LOOKUP_ORDER_PAYLOAD":
+        await FacebookService.showLookupOrder(sender_psid);
+        break;
+      case "TALK_TO_AGENT_PAYLOAD":
+        await FacebookService.requestTalkToAgent(sender_psid);
+        break;
+      default:
+        console.log("default block in handleMessage in ChatbotController.js");
+    }
+  }
+
   let response;
 
   // Check if the message contains text

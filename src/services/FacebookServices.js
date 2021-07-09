@@ -21,16 +21,32 @@ let getInitialSetup = () => {
             composer_input_disabled: false,
             call_to_actions: [
               {
-                type: "web_url",
-                title: "Visit Me",
-                url: "https://www.google.com/",
-                webview_height_ratio: "full",
+                type: "postback",
+                title: "Talk to an Agent",
+                payload: "TALK_TO_AGENT_PAYLOAD",
               },
               {
-                type: "web_url",
-                title: "Shop Now",
-                url: "https://www.google.com/",
-                webview_height_ratio: "full",
+                type: "postback",
+                title: "Restart the Conversation",
+                payload: "RESTART_BOT_PAYLOAD",
+              },
+              {
+                type: "nested",
+                title: "More Info",
+                call_to_actions: [
+                  {
+                    type: "web_url",
+                    title: "From More Info",
+                    url: "https://www.google.com/",
+                    webview_height_ratio: "full",
+                  },
+                  {
+                    type: "web_url",
+                    title: "Shop Now",
+                    url: "https://www.google.com/",
+                    webview_height_ratio: "full",
+                  },
+                ],
               },
             ],
           },
@@ -223,12 +239,12 @@ let welcomeNewUser = (sender_psid) => {
           {
             content_type: "text",
             title: "Lookup Order",
-            payload: "LOOKUP_ORDER_PAYLOAD>",
+            payload: "LOOKUP_ORDER_PAYLOAD",
           },
           {
             content_type: "text",
             title: "Talk to an Agent",
-            payload: "TALK_AGENT_PAYLOAD",
+            payload: "TALK_TO_AGENT_PAYLOAD",
           },
         ],
       };
@@ -243,6 +259,116 @@ let welcomeNewUser = (sender_psid) => {
   });
 };
 
+//show categories
+let showCategories = (sender_psid) => {
+  return new Promise((resolve, reject) => {
+    try {
+      //sending a generic template message
+      let response = {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "generic",
+            elements: [
+              //first
+              {
+                title: "ANIMALS!",
+                image_url: "https://placeimg.com/300/200/animals",
+                subtitle: "A heart beats in animals the same as in us",
+                default_action: {
+                  type: "web_url",
+                  url: "https://www.nationalgeographic.com/animals",
+                  webview_height_ratio: "tall",
+                },
+                buttons: [
+                  {
+                    type: "web_url",
+                    url: "https://www.nationalgeographic.com/animals",
+                    title: "View Website",
+                  },
+                  {
+                    type: "postback",
+                    title: "Show Animals",
+                    payload: "SHOW_ANIMALS_PAYLOAD",
+                  },
+                ],
+              },
+              //second
+              {
+                title: "NATURE!",
+                image_url: "https://placeimg.com/300/200/nature",
+                subtitle: "Join hands to save environment",
+                default_action: {
+                  type: "web_url",
+                  url: "https://www.nature.com/",
+                  webview_height_ratio: "tall",
+                },
+                buttons: [
+                  {
+                    type: "web_url",
+                    url: "https://www.nature.com/",
+                    title: "View Website",
+                  },
+                  {
+                    type: "postback",
+                    title: "Show Nature",
+                    payload: "SHOW_NATURE_PAYLOAD",
+                  },
+                ],
+              },
+              //third
+              {
+                title: "ARCHITECTURE!",
+                image_url: "https://placeimg.com/300/200/arch",
+                subtitle: "Let the building speak",
+                default_action: {
+                  type: "web_url",
+                  url: "https://www.archdaily.com/tag/architecture",
+                  webview_height_ratio: "tall",
+                },
+                buttons: [
+                  {
+                    type: "web_url",
+                    url: "https://www.archdaily.com/tag/architecture",
+                    title: "View Website",
+                  },
+                  {
+                    type: "postback",
+                    title: "Show Architecture",
+                    payload: "SHOW_ARCHITECTURE_PAYLOAD",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      };
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+//show lookup order
+let showLookupOrder = (sender_psid) => {
+  return new Promise((resolve, reject) => {
+    try {
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+//to talk to agent
+let requestTalkToAgent = (sender_psid) => {
+  return new Promise((resolve, reject) => {
+    try {
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 //now exporting functions as a object [property: value]
 module.exports = {
   getInitialSetup: getInitialSetup,
@@ -251,4 +377,7 @@ module.exports = {
   markedMessageAsSeen: markedMessageAsSeen,
   callSendAPI: callSendAPI,
   welcomeNewUser: welcomeNewUser,
+  showCategories: showCategories,
+  showLookupOrder: showLookupOrder,
+  requestTalkToAgent: requestTalkToAgent,
 };
