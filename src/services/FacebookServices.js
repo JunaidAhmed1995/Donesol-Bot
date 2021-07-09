@@ -41,7 +41,7 @@ let getInitialSetup = () => {
       request(
         {
           uri: url,
-          method: "GET",
+          method: "POST",
           json: request_body,
         },
         (err, response, body) => {
