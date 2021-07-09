@@ -30,24 +30,6 @@ let getInitialSetup = () => {
                 title: "Restart the Conversation",
                 payload: "RESTART_BOT_PAYLOAD",
               },
-              {
-                type: "nested",
-                title: "More Info",
-                call_to_actions: [
-                  {
-                    type: "web_url",
-                    title: "From More Info",
-                    url: "https://www.google.com/",
-                    webview_height_ratio: "full",
-                  },
-                  {
-                    type: "web_url",
-                    title: "Shop Now",
-                    url: "https://www.google.com/",
-                    webview_height_ratio: "full",
-                  },
-                ],
-              },
             ],
           },
         ],

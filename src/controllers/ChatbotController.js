@@ -159,7 +159,9 @@ let handlePostback = async (sender_psid, received_postback) => {
   }
 
   // Send the message to acknowledge the postback
-  await FacebookService.callSendAPI(sender_psid, response);
+  if (payload !== "GET_STARTED_PAYLOAD") {
+    await FacebookService.callSendAPI(sender_psid, response);
+  }
 };
 
 // // Sends response messages to user via the Send API
