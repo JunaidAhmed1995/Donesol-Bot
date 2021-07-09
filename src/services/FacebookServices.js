@@ -32,6 +32,12 @@ let getInitialSetup = () => {
                 url: "https://www.google.com/",
                 webview_height_ratio: "full",
               },
+              {
+                type: "web_url",
+                title: "Shop Now",
+                url: "https://www.google.com/",
+                webview_height_ratio: "full",
+              },
             ],
           },
         ],
