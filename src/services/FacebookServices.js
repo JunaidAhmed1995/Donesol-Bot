@@ -100,7 +100,7 @@ let showTypingAnimation = (sender_psid) => {
         sender_action: "typing_on",
       };
 
-      let url = `https://graph.facebook.com/v7.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
+      let url = `https://graph.facebook.com/v11.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
       // Send the HTTP request to the Messenger Platform
       request(
         {
@@ -134,7 +134,7 @@ let markedMessageAsSeen = (sender_psid) => {
         sender_action: "mark_seen",
       };
 
-      let url = `https://graph.facebook.com/v7.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
+      let url = `https://graph.facebook.com/v11.0/me/messages?access_token=${PAGE_ACCESS_TOKEN}`;
       // Send the HTTP request to the Messenger Platform
       request(
         {
@@ -177,7 +177,7 @@ let callSendAPI = (sender_psid, response) => {
       // Send the HTTP request to the Messenger Platform
       request(
         {
-          uri: "https://graph.facebook.com/v7.0/me/messages",
+          uri: "https://graph.facebook.com/v11.0/me/messages",
           qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
           method: "POST",
           json: request_body,
