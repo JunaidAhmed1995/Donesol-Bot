@@ -18,7 +18,7 @@ let getInitialSetup = () => {
         persistent_menu: [
           {
             locale: "default",
-            composer_input_disabled: false,
+            composer_input_disabled: true,
             call_to_actions: [
               {
                 type: "nested",
@@ -49,6 +49,10 @@ let getInitialSetup = () => {
                 payload: "RESTART_BOT_PAYLOAD",
               },
             ],
+          },
+          {
+            locale: "zh_CN",
+            composer_input_disabled: false,
           },
         ],
       };
