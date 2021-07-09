@@ -261,7 +261,7 @@ let welcomeNewUser = (sender_psid) => {
 
 //show categories
 let showCategories = (sender_psid) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
       //sending a generic template message
       let response = {
@@ -343,6 +343,8 @@ let showCategories = (sender_psid) => {
           },
         },
       };
+      await callSendAPI(sender_psid, response);
+      resolve("Send categories as Carousel");
     } catch (e) {
       reject(e);
     }
