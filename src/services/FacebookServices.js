@@ -274,6 +274,11 @@ let showCategories = (sender_psid) => {
                     title: "Show Animals",
                     payload: "SHOW_ANIMALS_PAYLOAD",
                   },
+                  {
+                    type: "postback",
+                    title: "Main Menu",
+                    payload: "MAIN_MENU_PAYLOAD",
+                  },
                 ],
               },
               //second
@@ -297,6 +302,11 @@ let showCategories = (sender_psid) => {
                     title: "Show Nature",
                     payload: "SHOW_NATURE_PAYLOAD",
                   },
+                  {
+                    type: "postback",
+                    title: "Main Menu",
+                    payload: "MAIN_MENU_PAYLOAD",
+                  },
                 ],
               },
               //third
@@ -319,6 +329,11 @@ let showCategories = (sender_psid) => {
                     type: "postback",
                     title: "Show Architecture",
                     payload: "SHOW_ARCHITECTURE_PAYLOAD",
+                  },
+                  {
+                    type: "postback",
+                    title: "Main Menu",
+                    payload: "MAIN_MENU_PAYLOAD",
                   },
                 ],
               },
