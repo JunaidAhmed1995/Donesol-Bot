@@ -369,7 +369,7 @@ let showAnimals = (sender_psid) => {
               {
                 title: "COW",
                 image_url:
-                  "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.britannica.com%2Fanimal%2Fcow&psig=AOvVaw09JUN1FhUX4vKwOtxhu5Jm&ust=1626153499470000&source=images&cd=vfe&ved=0CAcQjRxqFwoTCKjTmork3PECFQAAAAAdAAAAABAD",
+                  "https://pixabay.com/photos/cow-lick-tongue-head-cow-head-1715829/",
                 subtitle: "$99999",
                 default_action: {
                   type: "web_url",
@@ -384,7 +384,7 @@ let showAnimals = (sender_psid) => {
                   },
                   {
                     type: "postback",
-                    title: "Show Animals",
+                    title: "Back to Categories",
                     payload: "BACK_TO_CATEGORIES_PAYLOAD",
                   },
                 ],
@@ -408,7 +408,7 @@ let showAnimals = (sender_psid) => {
                   },
                   {
                     type: "postback",
-                    title: "Show Animals",
+                    title: "Back to Categories",
                     payload: "BACK_TO_CATEGORIES_PAYLOAD",
                   },
                 ],
