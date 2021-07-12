@@ -159,7 +159,12 @@ let handlePostback = async (sender_psid, received_postback) => {
       await FacebookService.welcomeNewUser(sender_psid);
       break;
     case "BACK_TO_CATEGORIES_PAYLOAD":
-      await FacebookService.backToCategories(sender_psid);
+      await FacebookService.goBackToCategories(sender_psid);
+      break;
+    case "MAIN_MENU_PAYLOAD":
+      await FacebookService.goBackToMainMenu(sender_psid);
+      break;
+    case "SET_ORDER_INFO_PAYLOAD":
       break;
     default:
       console.log("default block in handlePostback");

@@ -336,8 +336,32 @@ let showCategories = (sender_psid) => {
 
 //show lookup order
 let showLookupOrder = (sender_psid) => {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     try {
+      //sending a button template message
+      let response = {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "button",
+            text: "OK! Lets set info about your order, so I won't need to ask them in the future",
+            buttons: [
+              {
+                type: "postback",
+                title: "Set Info!",
+                payload: "SET_ORDER_INFO_PAYLOAD",
+              },
+              {
+                type: "postback",
+                title: "Main Menu",
+                payload: "MAIN_MENU_PAYLOAD",
+              },
+            ],
+          },
+        },
+      };
+      await callSendAPI(sender_psid, response);
+      resolve("Send categories as Carousel");
     } catch (e) {
       reject(e);
     }
@@ -386,6 +410,11 @@ let showAnimals = (sender_psid) => {
                     title: "Back to Categories",
                     payload: "BACK_TO_CATEGORIES_PAYLOAD",
                   },
+                  {
+                    type: "postback",
+                    title: "Main Menu",
+                    payload: "MAIN_MENU_PAYLOAD",
+                  },
                 ],
               },
               //second
@@ -409,6 +438,11 @@ let showAnimals = (sender_psid) => {
                     title: "Back to Categories",
                     payload: "BACK_TO_CATEGORIES_PAYLOAD",
                   },
+                  {
+                    type: "postback",
+                    title: "Main Menu",
+                    payload: "MAIN_MENU_PAYLOAD",
+                  },
                 ],
               },
             ],
@@ -424,11 +458,46 @@ let showAnimals = (sender_psid) => {
 };
 
 //get back to categories Carousel
-let backToCategories = (sender_psid) => {
+let goBackToCategories = (sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
       await showCategories(sender_psid);
       resolve("back to categories carousel");
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+//set order info through web-view
+let setOrderInfoByWebView = (sender_psid) => {};
+
+//back to main menu
+let goBackToMainMenu = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let response = {
+        text: "How May I Help You?",
+        quick_replies: [
+          {
+            content_type: "text",
+            title: "Categories",
+            payload: "CATEGORIES_PAYLOAD",
+          },
+          {
+            content_type: "text",
+            title: "Lookup Order",
+            payload: "LOOKUP_ORDER_PAYLOAD",
+          },
+          {
+            content_type: "text",
+            title: "Talk to an Agent",
+            payload: "TALK_TO_AGENT_PAYLOAD",
+          },
+        ],
+      };
+      await callSendAPI(sender_psid, response);
+      resolve("go back to main menu");
     } catch (e) {
       reject(e);
     }
@@ -447,5 +516,7 @@ module.exports = {
   showLookupOrder: showLookupOrder,
   requestTalkToAgent: requestTalkToAgent,
   showAnimals: showAnimals,
-  backToCategories: backToCategories,
+  goBackToCategories: goBackToCategories,
+  setOrderInfoByWebView: setOrderInfoByWebView,
+  goBackToMainMenu: goBackToMainMenu,
 };
