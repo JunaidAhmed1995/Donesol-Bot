@@ -222,10 +222,29 @@ let getInfoLookupOrderPage = (req, res) => {
 };
 
 //set info lookup order
-let setInfoLookupOrder = (req, res) => {
-  return res.status(200).json({
-    message: "Successfully Set the Info Lookup Order",
-  });
+let setInfoLookupOrder = async (req, res) => {
+  try {
+    let response1 = {
+      text: `--- Info About Order ---
+      \n\nCustomer Name: ${req.body.customerName}
+      \nEmail: ${req.body.email}
+      \nOrder Number: ${req.body.orderNumber}
+      `,
+    };
+
+    let response2 = {
+      text: "We are checking your Order. Be Patient!",
+    };
+
+    await FacebookService.callSendAPI(req.body.psid, response1);
+    await FacebookService.callSendAPI(req.body.psid, response2);
+
+    return res.status(200).json({
+      message: "Successfully Set the Info Lookup Order",
+    });
+  } catch (e) {
+    console.log("==error in setInfoLookupOrder==", e);
+  }
 };
 
 //now exporting functions as a object [property: value]
