@@ -354,6 +354,89 @@ let requestTalkToAgent = (sender_psid) => {
   });
 };
 
+//showing different animals when user click on show Animals button in Categories Carousel
+let showAnimals = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      //sending a generic template message
+      let response = {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "generic",
+            elements: [
+              //first
+              {
+                title: "COW",
+                image_url:
+                  "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.britannica.com%2Fanimal%2Fcow&psig=AOvVaw09JUN1FhUX4vKwOtxhu5Jm&ust=1626153499470000&source=images&cd=vfe&ved=0CAcQjRxqFwoTCKjTmork3PECFQAAAAAdAAAAABAD",
+                subtitle: "$99999",
+                default_action: {
+                  type: "web_url",
+                  url: "https://www.dairydealer.com/collections/dairy-cattle",
+                  webview_height_ratio: "tall",
+                },
+                buttons: [
+                  {
+                    type: "web_url",
+                    url: "https://www.dairydealer.com/collections/dairy-cattle",
+                    title: "Order Now",
+                  },
+                  {
+                    type: "postback",
+                    title: "Show Animals",
+                    payload: "BACK_TO_CATEGORIES_PAYLOAD",
+                  },
+                ],
+              },
+              //second
+              {
+                title: "GOAT",
+                image_url:
+                  "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.bbc.com%2Fnews%2Fuk-england-lancashire-55887368&psig=AOvVaw1sgAF-5zoPKkOPwz12q1bL&ust=1626153620690000&source=images&cd=vfe&ved=0CAcQjRxqFwoTCICVhMjk3PECFQAAAAAdAAAAABAD",
+                subtitle: "$999",
+                default_action: {
+                  type: "web_url",
+                  url: "https://blueskyorganicfarms.com/goats-for-sale/",
+                  webview_height_ratio: "tall",
+                },
+                buttons: [
+                  {
+                    type: "web_url",
+                    url: "https://blueskyorganicfarms.com/goats-for-sale/",
+                    title: "Order Now",
+                  },
+                  {
+                    type: "postback",
+                    title: "Show Animals",
+                    payload: "BACK_TO_CATEGORIES_PAYLOAD",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      };
+      await callSendAPI(sender_psid, response);
+      resolve("Show Animals as Carousel");
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+//get back to categories Carousel
+let backToCategories = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      await showCategories(sender_psid);
+      resolve("back to categories carousel");
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 //now exporting functions as a object [property: value]
 module.exports = {
   getInitialSetup: getInitialSetup,
@@ -365,4 +448,6 @@ module.exports = {
   showCategories: showCategories,
   showLookupOrder: showLookupOrder,
   requestTalkToAgent: requestTalkToAgent,
+  showAnimals: showAnimals,
+  backToCategories: backToCategories,
 };

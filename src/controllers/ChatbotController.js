@@ -145,14 +145,21 @@ let handlePostback = async (sender_psid, received_postback) => {
 
   // Set the response based on the postback payload
   switch (payload) {
-    case "YES_PAYLOAD":
-      response = { text: "Thanks!" };
+    case "TALK_TO_AGENT_PAYLOAD":
       break;
-    case "NO_PAYLOAD":
-      response = { text: "Oops, try sending another image." };
+    case "SHOW_ANIMALS_PAYLOAD":
+      await FacebookService.showAnimals(sender_psid);
+      break;
+    case "SHOW_NATURE_PAYLOAD":
+      break;
+    case "SHOW_ARCHITECTURE_PAYLOAD":
       break;
     case "GET_STARTED_PAYLOAD":
+    case "RESTART_BOT_PAYLOAD":
       await FacebookService.welcomeNewUser(sender_psid);
+      break;
+    case "BACK_TO_CATEGORIES_PAYLOAD":
+      await FacebookService.backToCategories(sender_psid);
       break;
     default:
       console.log("default block in handlePostback");
