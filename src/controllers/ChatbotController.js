@@ -225,11 +225,25 @@ let getInfoLookupOrderPage = (req, res) => {
 let setInfoLookupOrder = async (req, res) => {
   try {
     let response1 = {
-      text: `Info About Order\n\nCustomer Name:\t ${req.body.customerName}\nEmail:\t\t\t ${req.body.email}\nOrder Number:\t ${req.body.orderNumber}`,
+      text: `Order Deatils\n\nCustomer Name:\t ${req.body.customerName}\nEmail:\t\t\t ${req.body.email}\nOrder Number:\t ${req.body.orderNumber}`,
     };
 
+    //sending a button template message
     let response2 = {
-      text: "We are checking your Order. Be Patient!",
+      attachment: {
+        type: "template",
+        payload: {
+          template_type: "button",
+          text: "We are checking your Order Details. Be Patient! Once done will notify you. Thanks!",
+          buttons: [
+            {
+              type: "postback",
+              title: "Main Menu",
+              payload: "MAIN_MENU_PAYLOAD",
+            },
+          ],
+        },
+      },
     };
 
     await FacebookService.callSendAPI(req.body.psid, response1);
