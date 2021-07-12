@@ -215,10 +215,25 @@ let handleInitialSetup = async (req, res) => {
   }
 }; //handleInitialSetup functions ENDs!
 
+//info about lookup order
+let getInfoLookupOrderPage = (req, res) => {
+  let facebookAppId = process.env.FACEBOOK_APP_ID;
+  return res.render("infoLookupOrder.ejs", { facebookAppId: facebookAppId });
+};
+
+//set info lookup order
+let setInfoLookupOrder = (req, res) => {
+  return res.status(200).json({
+    message: "Successfully Set the Info Lookup Order",
+  });
+};
+
 //now exporting functions as a object [property: value]
 module.exports = {
   homePage: homePage,
   getWebHook: getWebHook,
   postWebHook: postWebHook,
   handleInitialSetup: handleInitialSetup,
+  getInfoLookupOrderPage: getInfoLookupOrderPage,
+  setInfoLookupOrder: setInfoLookupOrder,
 };

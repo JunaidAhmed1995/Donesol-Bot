@@ -347,9 +347,11 @@ let showLookupOrder = (sender_psid) => {
             text: "OK! Lets set info about your order, so I won't need to ask them in the future",
             buttons: [
               {
-                type: "postback",
+                type: "web_url",
+                url: `${process.env.URL_WEB_VIEW_ORDER}`,
                 title: "Set Info!",
-                payload: "SET_ORDER_INFO_PAYLOAD",
+                webview_height_ratio: "tall",
+                messenger_extensions: true, //false: open web-view in new tab
               },
               {
                 type: "postback",

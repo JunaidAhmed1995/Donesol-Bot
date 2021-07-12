@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Info Lookup Order</title>
+    <!--Load Bootstrap 4-->
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+      integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+      crossorigin="anonymous"
+    />
+    <!--Load JQuery-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!--Load custom JS and CSS-->
+    <link rel="stylesheet" href="/css/infoLookupOrder.css" />
+    <script>
+      let facebookAppId = "<%= facebookAppId %>";
+    </script>
+    <script src="/js/infoLookupOrder.js"></script>
+  </head>
+  <body>
+    <div class="container fix-height">
+      <div class="row">
+        <div class="col-12">
+          <div class="text-center mt-3">
+            <span class="title">Order Lookup</span>
+          </div>
+          <input type="text" id="psid" hidden />
+          <div class="form-group">
+            <label for="customerName"
+              >Customer Name <span style="color: red">*</span>
+            </label>
+            <input type="text" id="customerName" class="form-control" />
+            <div class="invalid-feedback">Please fill out Customer Name</div>
+          </div>
+          <div class="form-group">
+            <label for="email">Email <span style="color: red">*</span> </label>
+            <input type="text" id="email" class="form-control" />
+            <div class="invalid-feedback">Please fill out Email</div>
+          </div>
+          <div class="form-group">
+            <label for="orderNumber"
+              >Order Number <span style="color: red">*</span>
+            </label>
+            <input type="text" id="orderNumber" class="form-control" />
+            <div class="invalid-feedback">Please fill out Order Number</div>
+          </div>
+          <button class="btn btn-primary" id="btnFindOrder">Find Order</button>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="text-center">
+        <div class="">
+          <span class="mr-3">&#169; Donesol-Chatbot</span>
+          <span class="ml-3">
+            Powered by
+            <a href="https://www.google.com" target="_blank"
+              >DoneSol Technologies</a
+            >
+          </span>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>
