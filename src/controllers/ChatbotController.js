@@ -225,7 +225,7 @@ let getInfoLookupOrderPage = (req, res) => {
 let setInfoLookupOrder = async (req, res) => {
   try {
     let response1 = {
-      text: `-- Info About Order --\n\nCustomer Name:\t ${req.body.customerName}\nEmail:\t ${req.body.email}\nOrder Number:\t ${req.body.orderNumber}`,
+      text: `-- Info About Order --\n\nCustomer Name:\t ${req.body.customerName}\nEmail:\t\t\t ${req.body.email}\nOrder Number:\t ${req.body.orderNumber}`,
     };
 
     let response2 = {
