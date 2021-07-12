@@ -368,8 +368,7 @@ let showAnimals = (sender_psid) => {
               //first
               {
                 title: "COW",
-                image_url:
-                  "https://pixabay.com/photos/cow-lick-tongue-head-cow-head-1715829/",
+                image_url: "https://placeimg.com/300/200/animals/sepia",
                 subtitle: "$99999",
                 default_action: {
                   type: "web_url",
@@ -392,8 +391,7 @@ let showAnimals = (sender_psid) => {
               //second
               {
                 title: "GOAT",
-                image_url:
-                  "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.bbc.com%2Fnews%2Fuk-england-lancashire-55887368&psig=AOvVaw1sgAF-5zoPKkOPwz12q1bL&ust=1626153620690000&source=images&cd=vfe&ved=0CAcQjRxqFwoTCICVhMjk3PECFQAAAAAdAAAAABAD",
+                image_url: "https://placeimg.com/300/200/nature/sepia",
                 subtitle: "$999",
                 default_action: {
                   type: "web_url",

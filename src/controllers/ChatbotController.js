@@ -164,11 +164,6 @@ let handlePostback = async (sender_psid, received_postback) => {
     default:
       console.log("default block in handlePostback");
   }
-
-  // Send the message to acknowledge the postback
-  if (payload !== "GET_STARTED_PAYLOAD") {
-    await FacebookService.callSendAPI(sender_psid, response);
-  }
 };
 
 // // Sends response messages to user via the Send API
