@@ -392,9 +392,16 @@ let requestTalkToAgent = (sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
       //send a text message
-      let emoji = String.fromCodePoint(0x1f621);
+      const SLEEPING_FACE = String.fromCodePoint(0x1f634);
+      const SMILING_FACE_WITH_SMILING_EYES = String.fromCodePoint(0x1f60a);
+      const RIGHT_HAND_ARROW = String.fromCodePoint(0x1f449);
+      const LEFT_HAND_ARROW = String.fromCodePoint(0x1f448);
       let response1 = {
-        text: `Ok! You have turned off the bot ${emoji}\nSomeone real will be with you in a few minutes`,
+        text:
+          `Ok! You have turned off the bot ${SLEEPING_FACE}` +
+          `\nSomeone real will be with you in a few minutes ${SMILING_FACE_WITH_SMILING_EYES}` +
+          `\n\nTo enable the bot again, send a message:` +
+          `\n${RIGHT_HAND_ARROW} 'back' or 'exit' ${LEFT_HAND_ARROW}`,
       };
 
       await callSendAPI(sender_psid, response1);
