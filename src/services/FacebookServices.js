@@ -459,7 +459,7 @@ let passThreadControl = (sender_psid, app) => {
 
 //pass the control from secondary to primary
 let takeThreadControl = (sender_psid) => {
-  return new Promise(async (resolve, reject) => {
+  return new Promise((resolve, reject) => {
     try {
       // Construct the message body
       let request_body = {
@@ -477,7 +477,7 @@ let takeThreadControl = (sender_psid) => {
           method: "POST",
           json: request_body,
         },
-        (err, res, body) => {
+        async (err, res, body) => {
           if (!err) {
             //send message to show control is changing
             await callSendAPI(sender_psid, {
