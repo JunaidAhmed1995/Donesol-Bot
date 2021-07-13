@@ -44,7 +44,26 @@ let postWebHook = (req, res) => {
     body.entry.forEach(function (entry) {
       //check the incoming message from Primary app or not?
       //if Secondary app, EXIT.
-      if (entry.standby) return;
+      if (entry.standby) {
+        //if user's message is "back" or "exit"
+        //return conversation to bot
+        let webhook_standby = entry.standby[0];
+        if (webhook_standby && webhook_standby.message) {
+          if (
+            webhook_standby.message.text === "back" ||
+            webhook_standby.message.text === "exit"
+          ) {
+            //call the function to return conversation to Primary App (bot)
+            // FacebookService.passThreadControl(
+            //   webhook_standby.sender.id,
+            //   "primary"
+            // );
+            FacebookService.takeThreadControl(webhook_standby.sender.id);
+          }
+        }
+
+        return;
+      }
       // Gets the message. entry.messaging is an array, but
       // will only ever contain one message, so we get index 0
       let webhook_event = entry.messaging[0];
@@ -149,6 +168,7 @@ let handlePostback = async (sender_psid, received_postback) => {
   // Set the response based on the postback payload
   switch (payload) {
     case "TALK_TO_AGENT_PAYLOAD":
+      await FacebookService.requestTalkToAgent(sender_psid);
       break;
     case "SHOW_ANIMALS_PAYLOAD":
       await FacebookService.showAnimals(sender_psid);

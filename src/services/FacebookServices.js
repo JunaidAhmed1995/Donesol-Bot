@@ -4,6 +4,8 @@ import request from "request";
 //setup the environment variables
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+const SECONDARY_RECEIVER_ID = process.env.SECONDARY_RECEIVER_ID;
+const PRIMARY_RECEIVER_ID = process.env.FACEBOOK_APP_ID;
 
 //function for get-started and persistant Menu
 let getInitialSetup = () => {
@@ -396,7 +398,8 @@ let requestTalkToAgent = (sender_psid) => {
 
       await callSendAPI(sender_psid, response1);
       //change this conversation to page inbox
-      await passThreadControl(sender_psid);
+      let app = "page_inbox";
+      await passThreadControl(sender_psid, app);
       resolve("handover the chat to live agent");
     } catch (e) {
       reject(e);
@@ -405,16 +408,31 @@ let requestTalkToAgent = (sender_psid) => {
 };
 
 //pass the control to live agent
-let passThreadControl = (sender_psid) => {
+let passThreadControl = (sender_psid, app) => {
   return new Promise((resolve, reject) => {
     try {
+      let target_app_id = "";
+      let metadata = "";
+
+      //check if page_inbox
+      if (app === "page_inbox") {
+        target_app_id = SECONDARY_RECEIVER_ID;
+        metadata = "Pass thread control to inbox chat";
+      }
+
+      //check if primary
+      if (app === "primary") {
+        target_app_id = PRIMARY_RECEIVER_ID;
+        metadata = "Pass thread control to Donesol-Bot, Primary App";
+      }
+
       // Construct the message body
       let request_body = {
         recipient: {
           id: sender_psid,
         },
-        target_app_id: process.env.SECONDARY_RECEIVER_ID,
-        metadata: "Pass thread control to inbox chat",
+        target_app_id: target_app_id,
+        metadata: metadata,
       };
 
       // Send the HTTP request to the Messenger Platform
@@ -427,6 +445,45 @@ let passThreadControl = (sender_psid) => {
         },
         (err, res, body) => {
           if (!err) {
+            resolve("Pass the control!");
+          } else {
+            reject("Unable to pass control:" + err);
+          }
+        }
+      );
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+//pass the control from secondary to primary
+let takeThreadControl = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      // Construct the message body
+      let request_body = {
+        recipient: {
+          id: sender_psid,
+        },
+        metadata: "Pass the control from Secondary to Primary App",
+      };
+
+      // Send the HTTP request to the Messenger Platform
+      request(
+        {
+          uri: "https://graph.facebook.com/v11.0/me/take_thread_control",
+          qs: { access_token: PAGE_ACCESS_TOKEN },
+          method: "POST",
+          json: request_body,
+        },
+        (err, res, body) => {
+          if (!err) {
+            //send message to show control is changing
+            await callSendAPI(sender_psid, {
+              text: "Donesol-Bot came back !!!",
+            });
+            await goBackToMainMenu(sender_psid);
             resolve("Pass the control!");
           } else {
             reject("Unable to pass control:" + err);
@@ -580,4 +637,6 @@ module.exports = {
   goBackToCategories: goBackToCategories,
   setOrderInfoByWebView: setOrderInfoByWebView,
   goBackToMainMenu: goBackToMainMenu,
+  passThreadControl: passThreadControl,
+  takeThreadControl: takeThreadControl,
 };
