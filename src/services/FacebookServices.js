@@ -392,8 +392,9 @@ let requestTalkToAgent = (sender_psid) => {
   return new Promise(async (resolve, reject) => {
     try {
       //send a text message
+      let emoji = String.fromCodePoint(0x1f621);
       let response1 = {
-        text: `Ok! You have turned off the bot {&#x1F634;}\nSomeone real will be with you in a few minutes &#x1F60A;`,
+        text: `Ok! You have turned off the bot ${emoji}\nSomeone real will be with you in a few minutes`,
       };
 
       await callSendAPI(sender_psid, response1);
