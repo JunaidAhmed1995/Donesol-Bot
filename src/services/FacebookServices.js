@@ -387,8 +387,52 @@ let showLookupOrder = (sender_psid) => {
 
 //to talk to agent
 let requestTalkToAgent = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      //send a text message
+      let response1 = {
+        text: "OK! someone real will be with you in few minutes ^^",
+      };
+
+      await callSendAPI(sender_psid, response1);
+      //change this conversation to page inbox
+      await passThreadControl(sender_psid);
+      resolve("handover the chat to live agent");
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+//pass the control to live agent
+let passThreadControl = (sender_psid) => {
   return new Promise((resolve, reject) => {
     try {
+      // Construct the message body
+      let request_body = {
+        recipient: {
+          id: sender_psid,
+        },
+        target_app_id: process.env.SECONDARY_RECEIVER_ID,
+        metadata: "Pass thread control to inbox chat",
+      };
+
+      // Send the HTTP request to the Messenger Platform
+      request(
+        {
+          uri: "https://graph.facebook.com/v11.0/me/pass_thread_control",
+          qs: { access_token: PAGE_ACCESS_TOKEN },
+          method: "POST",
+          json: request_body,
+        },
+        (err, res, body) => {
+          if (!err) {
+            resolve("Pass the control!");
+          } else {
+            reject("Unable to pass control:" + err);
+          }
+        }
+      );
     } catch (e) {
       reject(e);
     }
