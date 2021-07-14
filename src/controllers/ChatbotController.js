@@ -91,7 +91,6 @@ let postWebHook = (req, res) => {
 
 // Handles messages events
 let handleMessage = (sender_psid, received_message) => {
-  handleMessageWithEntities(received_message);
   //check is the incoming message is from Quick Reply?
   // if (
   //   received_message &&
@@ -121,36 +120,42 @@ let handleMessage = (sender_psid, received_message) => {
   //   // }
   //   return;
   // }
+
   //handle text message
-  // let entity = handleMessageWithEntities(received_message);
-  // if (entity.name === "datetime") {
-  //   await FacebookService.askUserForPhoneNumber(sender_psid);
-  // } else if (entity.name === "phone_number") {
-  //   //something here
-  //   await FacebookService.doneAppointmentWithArchitect(sender_psid);
-  // } else {
-  //   //default reply here
-  //   let response = {
-  //     text: "i am a default response",
-  //   };
-  //   await FacebookService.callSendAPI(sender_psid, response);
-  // }
+  let entity = handleMessageWithEntities(received_message);
+  if (entity.name === "wit$datetime:datetime") {
+    // await FacebookService.askUserForPhoneNumber(sender_psid);
+  } else if (entity.name === "wit$phone_number:phone_number") {
+    // await FacebookService.doneAppointmentWithArchitect(sender_psid);
+  } else {
+    //default reply here
+    let response = {
+      text: "i am a default response",
+    };
+    await FacebookService.callSendAPI(sender_psid, response);
+  }
 };
 
 //return entity name, value etc... as object
 let handleMessageWithEntities = (message) => {
-  let entitiesArr = ["wit$datetime:datetime", "wit$phone_number:phone_number"];
+  let entitiesArray = [
+    "wit$datetime:datetime",
+    "wit$phone_number:phone_number",
+  ];
   let entityChosen = "";
-  // let data = {}; //data is an object saving name and value of the entity
-  entitiesArr.forEach((name) => {
+  let data = {}; //data is an object saving name and value of the entity
+  entitiesArray.forEach((name) => {
     let entity = firstEntity(message.nlp, name);
     if (entity && entity.confidence > 0.8) {
       entityChosen = name;
+      data.value = entity.value;
     }
   });
+  data.name = entityChosen;
   console.log("-------------------------");
-  console.log(entityChosen);
+  console.log(data);
   console.log("-------------------------");
+  return data;
 };
 
 //return the entity in message
