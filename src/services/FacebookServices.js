@@ -329,8 +329,8 @@ let showCategories = (sender_psid) => {
                   },
                   {
                     type: "postback",
-                    title: "Show Architecture",
-                    payload: "SHOW_ARCHITECTURE_PAYLOAD",
+                    title: "Make Appointment",
+                    payload: "MAKE_APPOINTMENT_WITH_ARCHITECT_PAYLOAD",
                   },
                   {
                     type: "postback",
@@ -630,6 +630,96 @@ let goBackToMainMenu = (sender_psid) => {
   });
 };
 
+//get suitable time for user to make appointment
+let makeAppointmentWithArchitect = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      //getting username from facebook profile
+      let username = await getFacebookUsername(sender_psid);
+      let response = {
+        text: `Hi ${username}, What time and date is suitable for you?`,
+      };
+      await callSendAPI(sender_psid, response);
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+//get phone number from user
+let askUserForPhoneNumber = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let username = await getFacebookUsername(sender_psid);
+      let request_body = {
+        recipient: {
+          id: sender_psid,
+        },
+        messaging_type: "RESPONSE",
+        message: {
+          text: `${username}, Let us know the phone number you used and we'll log you in now!`,
+          quick_replies: [
+            {
+              content_type: "user_phone_number",
+            },
+          ],
+        },
+      };
+
+      // Send the HTTP request to the Messenger Platform
+      request(
+        {
+          uri: "https://graph.facebook.com/v11.0/me/messages",
+          qs: { access_token: process.env.PAGE_ACCESS_TOKEN },
+          method: "POST",
+          json: request_body,
+        },
+        (err, res, body) => {
+          if (!err) {
+            resolve("message sent!");
+          } else {
+            reject("Unable to send message:" + err);
+          }
+        }
+      );
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+//done appointment with architect
+let doneAppointmentWithArchitect = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let username = await getFacebookUsername(sender_psid);
+      //sending a button template message
+      let response = {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "button",
+            text:
+              `Done! \nOur team will contact you as soon as possible ${username}` +
+              `\n\nWould you like to go on Main Menu`,
+            buttons: [
+              {
+                type: "postback",
+                title: "Main Menu",
+                payload: "MAIN_MENU_PAYLOAD",
+              },
+            ],
+          },
+        },
+      };
+      await callSendAPI(sender_psid, response);
+      resolve("Appointment with architect is done!");
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 //now exporting functions as a object [property: value]
 module.exports = {
   getInitialSetup: getInitialSetup,
@@ -647,4 +737,7 @@ module.exports = {
   goBackToMainMenu: goBackToMainMenu,
   passThreadControl: passThreadControl,
   takeThreadControl: takeThreadControl,
+  makeAppointmentWithArchitect: makeAppointmentWithArchitect,
+  askUserForPhoneNumber: askUserForPhoneNumber,
+  doneAppointmentWithArchitect: doneAppointmentWithArchitect,
 };

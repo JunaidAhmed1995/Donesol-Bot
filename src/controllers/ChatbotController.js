@@ -99,63 +99,61 @@ let handleMessage = async (sender_psid, received_message) => {
   ) {
     let payload = received_message.quick_reply.payload;
 
-    switch (payload) {
-      case "CATEGORIES_PAYLOAD":
-        await FacebookService.showCategories(sender_psid);
-        break;
-      case "LOOKUP_ORDER_PAYLOAD":
-        await FacebookService.showLookupOrder(sender_psid);
-        break;
-      case "TALK_TO_AGENT_PAYLOAD":
-        await FacebookService.requestTalkToAgent(sender_psid);
-        break;
-      default:
-        console.log("default block in handleMessage in ChatbotController.js");
+    //user tap on categories quick-reply
+    if (payload === "CATEGORIES_PAYLOAD") {
+      await FacebookService.showCategories(sender_psid);
+      return;
     }
+    //user tap on lookup_order quick-reply
+    if (payload === "LOOKUP_ORDER_PAYLOAD") {
+      await FacebookService.showLookupOrder(sender_psid);
+      return;
+    }
+    //user tap on talk_to_an_agent quick-reply
+    if (payload === "TALK_TO_AGENT_PAYLOAD") {
+      await FacebookService.requestTalkToAgent(sender_psid);
+      return;
+    }
+    //payload is a phone number!
+    if (payload !== "") {
+      await FacebookService.doneAppointmentWithArchitect(sender_psid);
+      return;
+    }
+    return;
   }
 
-  // let response;
+  //handle text message
+  let entity = handleMessageWithEntities(received_message);
 
-  // // Check if the message contains text
-  // if (received_message.text) {
-  //   // Create the payload for a basic text message
-  //   response = {
-  //     text: `You sent the message: "${received_message.text}". Now send me an image!`,
-  //   };
-  // } else if (received_message.attachments) {
-  //   // Gets the URL of the message attachment
-  //   let attachment_url = received_message.attachments[0].payload.url;
-  //   response = {
-  //     attachment: {
-  //       type: "template",
-  //       payload: {
-  //         template_type: "generic",
-  //         elements: [
-  //           {
-  //             title: "Is this the right picture?",
-  //             subtitle: "Tap a button to answer.",
-  //             image_url: attachment_url,
-  //             buttons: [
-  //               {
-  //                 type: "postback",
-  //                 title: "Yes!",
-  //                 payload: "YES_PAYLOAD",
-  //               },
-  //               {
-  //                 type: "postback",
-  //                 title: "No!",
-  //                 payload: "NO_PAYLOAD",
-  //               },
-  //             ],
-  //           },
-  //         ],
-  //       },
-  //     },
-  //   };
-  // }
+  if (entity.name === "datetime") {
+    await FacebookService.askUserForPhoneNumber(sender_psid);
+  } else if (entity.name === "phone_number") {
+    //something here
+    await FacebookService.doneAppointmentWithArchitect(sender_psid);
+  } else {
+    //default reply here
+  }
+};
 
-  // // Sends the response message
-  // await FacebookService.callSendAPI(sender_psid, response);
+//return entity name, value etc... as object
+let handleMessageWithEntities = (message) => {
+  const entitiesArray = ["datetime", "phone_number"];
+  let entityChosen = "";
+  let data = {}; //data is an object saving name and value of the entity
+  entitiesArray.forEach((name) => {
+    let entity = firstEntity(message.nlp, name);
+    if (entity && entity.confidence > 0.8) {
+      entityChosen = name;
+      data.value = entity.value;
+    }
+  });
+  data.name = entityChosen;
+  return data;
+};
+
+//return the entity in message
+let firstEntity = (nlp, name) => {
+  return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 };
 
 // Handles messaging_postbacks events
@@ -175,7 +173,8 @@ let handlePostback = async (sender_psid, received_postback) => {
       break;
     case "SHOW_NATURE_PAYLOAD":
       break;
-    case "SHOW_ARCHITECTURE_PAYLOAD":
+    case "MAKE_APPOINTMENT_WITH_ARCHITECT_PAYLOAD":
+      await FacebookService.makeAppointmentWithArchitect(sender_psid);
       break;
     case "GET_STARTED_PAYLOAD":
     case "RESTART_BOT_PAYLOAD":
@@ -289,3 +288,62 @@ module.exports = {
   getInfoLookupOrderPage: getInfoLookupOrderPage,
   setInfoLookupOrder: setInfoLookupOrder,
 };
+
+// let response;
+
+// // Check if the message contains text
+// if (received_message.text) {
+//   // Create the payload for a basic text message
+//   response = {
+//     text: `You sent the message: "${received_message.text}". Now send me an image!`,
+//   };
+// } else if (received_message.attachments) {
+//   // Gets the URL of the message attachment
+//   let attachment_url = received_message.attachments[0].payload.url;
+//   response = {
+//     attachment: {
+//       type: "template",
+//       payload: {
+//         template_type: "generic",
+//         elements: [
+//           {
+//             title: "Is this the right picture?",
+//             subtitle: "Tap a button to answer.",
+//             image_url: attachment_url,
+//             buttons: [
+//               {
+//                 type: "postback",
+//                 title: "Yes!",
+//                 payload: "YES_PAYLOAD",
+//               },
+//               {
+//                 type: "postback",
+//                 title: "No!",
+//                 payload: "NO_PAYLOAD",
+//               },
+//             ],
+//           },
+//         ],
+//       },
+//     },
+//   };
+// }
+
+// // Sends the response message
+// await FacebookService.callSendAPI(sender_psid, response);
+
+//another snippet
+
+// switch (payload) {
+//   case "CATEGORIES_PAYLOAD":
+//     await FacebookService.showCategories(sender_psid);
+//     break;
+//   case "LOOKUP_ORDER_PAYLOAD":
+//     await FacebookService.showLookupOrder(sender_psid);
+//     break;
+//   case "TALK_TO_AGENT_PAYLOAD":
+//     await FacebookService.requestTalkToAgent(sender_psid);
+//     break;
+//   default:
+//     console.log("default block in handleMessage in ChatbotController.js");
+// }
