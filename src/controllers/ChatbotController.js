@@ -90,7 +90,7 @@ let postWebHook = (req, res) => {
 };
 
 // Handles messages events
-let handleMessage = (sender_psid, received_message) => {
+let handleMessage = async (sender_psid, received_message) => {
   //check is the incoming message is from Quick Reply?
   // if (
   //   received_message &&
