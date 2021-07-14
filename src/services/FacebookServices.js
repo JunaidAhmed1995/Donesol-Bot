@@ -731,12 +731,12 @@ let showUserDetails = (sender_psid, user) => {
     try {
       let username = await getFacebookUsername(sender_psid);
       let response = {
-        text: `| --- <b>${username} Appointment Details</b> --- |
+        text: `| --- ${username} Appointment Details --- |
         \n| ------------------------------------------------------------ |
-        \n| 1. Username: <b>${username}</b> |
-        \n| 2. Phone Number: <b>${user.userPhoneNumber}</b> |
-        \n| 3. Appointment Time: <b>${user.userAppointmentTime}</b> |
-        \n| 4. Appointment Created At: <b>${user.userCreatedAt}</b> |
+        \n| 1. Username: ${username} |
+        \n| 2. Phone Number: ${user.userPhoneNumber} |
+        \n| 3. Appointment Time: ${user.userAppointmentTime} |
+        \n| 4. Appointment Created At: ${user.userCreatedAt} |
         \n| ------------------------------------------------------------ |`,
       };
       await callSendAPI(sender_psid, response);

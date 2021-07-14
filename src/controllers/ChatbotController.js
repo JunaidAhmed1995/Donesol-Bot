@@ -149,10 +149,16 @@ let handleMessage = async (sender_psid, received_message) => {
     await FacebookService.showUserDetails(sender_psid, user);
     await FacebookService.doneAppointmentWithArchitect(sender_psid);
   } else {
+    //check messages here
+    if (received_message && received_message.text) {
+      let text = received_message.text.toLowerCase();
+      if (text.includes("restart")) {
+        await FacebookService.welcomeNewUser(sender_psid);
+        return;
+      }
+    }
+
     //default reply here
-    let response = {
-      text: "i am a default response when no entity matches",
-    };
     await FacebookService.callSendAPI(sender_psid, response);
   }
 };
