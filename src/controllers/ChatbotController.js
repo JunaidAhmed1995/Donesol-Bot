@@ -155,7 +155,7 @@ let handleMessageWithEntities = (message) => {
 
 //return the entity in message
 let firstEntity = (nlp, name) => {
-  return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
+  return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
 };
 
 // Handles messaging_postbacks events
