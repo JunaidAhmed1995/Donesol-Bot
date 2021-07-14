@@ -115,7 +115,7 @@ let handleMessage = async (sender_psid, received_message) => {
       return;
     }
     //payload is a phone number!
-    if (payload !== "") {
+    if (payload !== " ") {
       await FacebookService.doneAppointmentWithArchitect(sender_psid);
       return;
     }
@@ -132,6 +132,10 @@ let handleMessage = async (sender_psid, received_message) => {
     await FacebookService.doneAppointmentWithArchitect(sender_psid);
   } else {
     //default reply here
+    let response = {
+      text: "i am a default response",
+    };
+    await FacebookService.callSendAPI(sender_psid, response);
   }
 };
 
