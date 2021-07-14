@@ -115,47 +115,48 @@ let handleMessage = async (sender_psid, received_message) => {
       return;
     }
     //payload is a phone number!
-    if (payload !== " ") {
-      await FacebookService.doneAppointmentWithArchitect(sender_psid);
-      return;
-    }
+    // if (payload !== " ") {
+    //   await FacebookService.doneAppointmentWithArchitect(sender_psid);
+    //   return;
+    // }
     return;
   }
 
   //handle text message
-  let entity = handleMessageWithEntities(received_message);
+  handleMessageWithEntities(received_message);
+  // let entity = handleMessageWithEntities(received_message);
 
-  if (entity.name === "datetime") {
-    await FacebookService.askUserForPhoneNumber(sender_psid);
-  } else if (entity.name === "phone_number") {
-    //something here
-    await FacebookService.doneAppointmentWithArchitect(sender_psid);
-  } else {
-    //default reply here
-    let response = {
-      text: "i am a default response",
-    };
-    await FacebookService.callSendAPI(sender_psid, response);
-  }
+  // if (entity.name === "datetime") {
+  //   await FacebookService.askUserForPhoneNumber(sender_psid);
+  // } else if (entity.name === "phone_number") {
+  //   //something here
+  //   await FacebookService.doneAppointmentWithArchitect(sender_psid);
+  // } else {
+  //   //default reply here
+  //   let response = {
+  //     text: "i am a default response",
+  //   };
+  //   await FacebookService.callSendAPI(sender_psid, response);
+  // }
 };
 
 //return entity name, value etc... as object
 let handleMessageWithEntities = (message) => {
   const entitiesArray = ["datetime", "phone_number"];
   let entityChosen = "";
-  let data = {}; //data is an object saving name and value of the entity
+  // let data = {}; //data is an object saving name and value of the entity
   entitiesArray.forEach((name) => {
     let entity = firstEntity(message.nlp, name);
     if (entity && entity.confidence > 0.8) {
       entityChosen = name;
-      data.value = entity.value;
+      // data.value = entity.value;
     }
   });
-  // console.log("-------------------------");
-  // console.log(entityChosen);
-  // console.log("-------------------------");
-  data.name = entityChosen;
-  return data;
+  console.log("-------------------------");
+  console.log(entityChosen);
+  console.log("-------------------------");
+  // data.name = entityChosen;
+  // return data;
 };
 
 //return the entity in message
