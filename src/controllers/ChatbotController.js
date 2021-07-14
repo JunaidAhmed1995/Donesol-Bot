@@ -125,9 +125,9 @@ let handleMessage = async (sender_psid, received_message) => {
   //handle text message
   let entity = handleMessageWithEntities(received_message);
 
-  if (entity === "datetime") {
+  if (entity.name === "datetime") {
     await FacebookService.askUserForPhoneNumber(sender_psid);
-  } else if (entity === "phone_number") {
+  } else if (entity.name === "phone_number") {
     //something here
     await FacebookService.doneAppointmentWithArchitect(sender_psid);
   } else {
@@ -141,24 +141,26 @@ let handleMessage = async (sender_psid, received_message) => {
 
 //return entity name, value etc... as object
 let handleMessageWithEntities = (message) => {
-  console.log("===message===", message);
   const entitiesArray = ["datetime", "phone_number"];
   let entityChosen = "";
-  // let data = {}; //data is an object saving name and value of the entity
+  let data = {}; //data is an object saving name and value of the entity
   entitiesArray.forEach((name) => {
     let entity = firstEntity(message.nlp, name);
     if (entity && entity.confidence > 0.8) {
       entityChosen = name;
-      // data.value = entity.value;
+      data.value = entity.value;
     }
   });
-  // data.name = entityChosen;
-  return entityChosen;
+  // console.log("-------------------------");
+  // console.log(entityChosen);
+  // console.log("-------------------------");
+  data.name = entityChosen;
+  return data;
 };
 
 //return the entity in message
 let firstEntity = (nlp, name) => {
-  return nlp && nlp.entities && nlp.traits[name] && nlp.traits[name][0];
+  return nlp && nlp.entities && nlp.entities[name] && nlp.entities[name][0];
 };
 
 // Handles messaging_postbacks events
