@@ -1,9 +1,17 @@
 require("dotenv").config();
 import request from "request";
 import FacebookService from "../services/FacebookServices";
+import moment from "moment";
 
 const MY_VERIFY_TOKEN = process.env.MY_VERIFY_TOKEN;
 const PAGE_ACCESS_TOKEN = process.env.PAGE_ACCESS_TOKEN;
+
+//creating Empty user object
+let user = {
+  userPhoneNumber: "",
+  userAppointmentTime: "",
+  userCreatedAt: "",
+};
 
 //function for testing the port
 let homePage = (req, res) => {
@@ -115,6 +123,11 @@ let handleMessage = async (sender_psid, received_message) => {
     }
     //payload is a phone number!
     if (payload !== " ") {
+      user.userPhoneNumber = payload;
+      user.userCreatedAt = moment(Date.now())
+        .zone("+05:00")
+        .format("DD/MM/YYYY h:mm A");
+      await FacebookService.showUserDetails(sender_psid, user);
       await FacebookService.doneAppointmentWithArchitect(sender_psid);
       return;
     }
@@ -124,8 +137,16 @@ let handleMessage = async (sender_psid, received_message) => {
   //handle text message
   let entity = handleMessageWithEntities(received_message);
   if (entity.name === "wit$datetime:datetime") {
+    user.userAppointmentTime = moment(entity.value)
+      .zone("+05:00")
+      .format("DD/MM/YYYY h:mm A");
     await FacebookService.askUserForPhoneNumber(sender_psid);
   } else if (entity.name === "wit$phone_number:phone_number") {
+    user.userPhoneNumber = entity.value;
+    user.userCreatedAt = moment(Date.now())
+      .zone("+05:00")
+      .format("DD/MM/YYYY h:mm A");
+    await FacebookService.showUserDetails(sender_psid, user);
     await FacebookService.doneAppointmentWithArchitect(sender_psid);
   } else {
     //default reply here

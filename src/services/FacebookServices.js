@@ -689,7 +689,7 @@ let askUserForPhoneNumber = (sender_psid) => {
 };
 
 //done appointment with architect
-let doneAppointmentWithArchitect = (sender_psid) => {
+let doneAppointmentWithArchitect = (sender_psid, user) => {
   return new Promise(async (resolve, reject) => {
     try {
       let username = await getFacebookUsername(sender_psid);
@@ -701,12 +701,17 @@ let doneAppointmentWithArchitect = (sender_psid) => {
             template_type: "button",
             text:
               `Done! \nOur team will contact you as soon as possible ${username}` +
-              `\n\nWould you like to go on Main Menu`,
+              `\n\nWould you like to see our Main Menu?`,
             buttons: [
               {
                 type: "postback",
                 title: "Main Menu",
                 payload: "MAIN_MENU_PAYLOAD",
+              },
+              {
+                type: "phone_number",
+                title: "HOT LINE",
+                payload: "+923071234567",
               },
             ],
           },
@@ -714,6 +719,28 @@ let doneAppointmentWithArchitect = (sender_psid) => {
       };
       await callSendAPI(sender_psid, response);
       resolve("Appointment with architect is done!");
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
+//showing user details
+let showUserDetails = (sender_psid, user) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let username = await getFacebookUsername(sender_psid);
+      let response = {
+        text: `| --- <b>${username} Appointment Details</b> --- |
+        \n| ----------------------------------------------------- |
+        \n| 1. Username: <b>${username}</b> |
+        \n| 2. Phone Number: <b>${user.userPhoneNumber}</b> |
+        \n| 3. Appointment Time: <b>${user.userAppointmentTime}</b> |
+        \n| 4. Appointment Created At: <b>${user.userCreatedAt}</b> |
+        \n| ----------------------------------------------------- |`,
+      };
+      await callSendAPI(sender_psid, response);
+      resolve("Showing User Details!");
     } catch (e) {
       reject(e);
     }
@@ -740,4 +767,5 @@ module.exports = {
   makeAppointmentWithArchitect: makeAppointmentWithArchitect,
   askUserForPhoneNumber: askUserForPhoneNumber,
   doneAppointmentWithArchitect: doneAppointmentWithArchitect,
+  showUserDetails: showUserDetails,
 };
