@@ -731,7 +731,7 @@ let showUserDetails = (sender_psid, user) => {
     try {
       let username = await getFacebookUsername(sender_psid);
       let response = {
-        text: `| --- <b>${username} Appointment Details</b> --- |
+        text: `| --- \x3Cb>${username} Appointment Details\x3C/b> --- |
         \n| ----------------------------------------------------- |
         \n| 1. Username: <b>${username}</b> |
         \n| 2. Phone Number: <b>${user.userPhoneNumber}</b> |
