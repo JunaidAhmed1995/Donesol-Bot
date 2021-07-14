@@ -139,7 +139,7 @@ let handleMessage = (sender_psid, received_message) => {
 
 //return entity name, value etc... as object
 let handleMessageWithEntities = (message) => {
-  let entitiesArr = ["wit$datetime:$datetime", "wit$phone_number:phone_number"];
+  let entitiesArr = ["wit$datetime:datetime", "wit$phone_number:phone_number"];
   let entityChosen = "";
   // let data = {}; //data is an object saving name and value of the entity
   entitiesArr.forEach((name) => {
