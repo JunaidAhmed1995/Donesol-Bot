@@ -92,45 +92,45 @@ let postWebHook = (req, res) => {
 // Handles messages events
 let handleMessage = async (sender_psid, received_message) => {
   //check is the incoming message is from Quick Reply?
-  // if (
-  //   received_message &&
-  //   received_message.quick_reply &&
-  //   received_message.quick_reply.payload
-  // ) {
-  //   let payload = received_message.quick_reply.payload;
-  //   //user tap on categories quick-reply
-  //   if (payload === "CATEGORIES_PAYLOAD") {
-  //     await FacebookService.showCategories(sender_psid);
-  //     return;
-  //   }
-  //   //user tap on lookup_order quick-reply
-  //   if (payload === "LOOKUP_ORDER_PAYLOAD") {
-  //     await FacebookService.showLookupOrder(sender_psid);
-  //     return;
-  //   }
-  //   //user tap on talk_to_an_agent quick-reply
-  //   if (payload === "TALK_TO_AGENT_PAYLOAD") {
-  //     await FacebookService.requestTalkToAgent(sender_psid);
-  //     return;
-  //   }
-  //   //payload is a phone number!
-  //   // if (payload !== " ") {
-  //   //   await FacebookService.doneAppointmentWithArchitect(sender_psid);
-  //   //   return;
-  //   // }
-  //   return;
-  // }
+  if (
+    received_message &&
+    received_message.quick_reply &&
+    received_message.quick_reply.payload
+  ) {
+    let payload = received_message.quick_reply.payload;
+    //user tap on categories quick-reply
+    if (payload === "CATEGORIES_PAYLOAD") {
+      await FacebookService.showCategories(sender_psid);
+      return;
+    }
+    //user tap on lookup_order quick-reply
+    if (payload === "LOOKUP_ORDER_PAYLOAD") {
+      await FacebookService.showLookupOrder(sender_psid);
+      return;
+    }
+    //user tap on talk_to_an_agent quick-reply
+    if (payload === "TALK_TO_AGENT_PAYLOAD") {
+      await FacebookService.requestTalkToAgent(sender_psid);
+      return;
+    }
+    //payload is a phone number!
+    if (payload !== " ") {
+      await FacebookService.doneAppointmentWithArchitect(sender_psid);
+      return;
+    }
+    return;
+  }
 
   //handle text message
   let entity = handleMessageWithEntities(received_message);
   if (entity.name === "wit$datetime:datetime") {
-    // await FacebookService.askUserForPhoneNumber(sender_psid);
+    await FacebookService.askUserForPhoneNumber(sender_psid);
   } else if (entity.name === "wit$phone_number:phone_number") {
-    // await FacebookService.doneAppointmentWithArchitect(sender_psid);
+    await FacebookService.doneAppointmentWithArchitect(sender_psid);
   } else {
     //default reply here
     let response = {
-      text: "i am a default response",
+      text: "i am a default response when no entity matches",
     };
     await FacebookService.callSendAPI(sender_psid, response);
   }
@@ -152,9 +152,6 @@ let handleMessageWithEntities = (message) => {
     }
   });
   data.name = entityChosen;
-  console.log("-------------------------");
-  console.log(data);
-  console.log("-------------------------");
   return data;
 };
 
@@ -295,6 +292,11 @@ module.exports = {
   getInfoLookupOrderPage: getInfoLookupOrderPage,
   setInfoLookupOrder: setInfoLookupOrder,
 };
+
+///////////////////////////////////////////
+// console.log("-------------------------");
+// console.log(data);
+// console.log("-------------------------");
 
 // let response;
 
