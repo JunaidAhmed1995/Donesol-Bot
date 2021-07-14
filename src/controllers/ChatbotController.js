@@ -90,42 +90,39 @@ let postWebHook = (req, res) => {
 };
 
 // Handles messages events
-let handleMessage = async (sender_psid, received_message) => {
-  //check is the incoming message is from Quick Reply?
-  if (
-    received_message &&
-    received_message.quick_reply &&
-    received_message.quick_reply.payload
-  ) {
-    let payload = received_message.quick_reply.payload;
-
-    //user tap on categories quick-reply
-    if (payload === "CATEGORIES_PAYLOAD") {
-      await FacebookService.showCategories(sender_psid);
-      return;
-    }
-    //user tap on lookup_order quick-reply
-    if (payload === "LOOKUP_ORDER_PAYLOAD") {
-      await FacebookService.showLookupOrder(sender_psid);
-      return;
-    }
-    //user tap on talk_to_an_agent quick-reply
-    if (payload === "TALK_TO_AGENT_PAYLOAD") {
-      await FacebookService.requestTalkToAgent(sender_psid);
-      return;
-    }
-    //payload is a phone number!
-    // if (payload !== " ") {
-    //   await FacebookService.doneAppointmentWithArchitect(sender_psid);
-    //   return;
-    // }
-    return;
-  }
-
-  //handle text message
+let handleMessage = (sender_psid, received_message) => {
   handleMessageWithEntities(received_message);
+  //check is the incoming message is from Quick Reply?
+  // if (
+  //   received_message &&
+  //   received_message.quick_reply &&
+  //   received_message.quick_reply.payload
+  // ) {
+  //   let payload = received_message.quick_reply.payload;
+  //   //user tap on categories quick-reply
+  //   if (payload === "CATEGORIES_PAYLOAD") {
+  //     await FacebookService.showCategories(sender_psid);
+  //     return;
+  //   }
+  //   //user tap on lookup_order quick-reply
+  //   if (payload === "LOOKUP_ORDER_PAYLOAD") {
+  //     await FacebookService.showLookupOrder(sender_psid);
+  //     return;
+  //   }
+  //   //user tap on talk_to_an_agent quick-reply
+  //   if (payload === "TALK_TO_AGENT_PAYLOAD") {
+  //     await FacebookService.requestTalkToAgent(sender_psid);
+  //     return;
+  //   }
+  //   //payload is a phone number!
+  //   // if (payload !== " ") {
+  //   //   await FacebookService.doneAppointmentWithArchitect(sender_psid);
+  //   //   return;
+  //   // }
+  //   return;
+  // }
+  //handle text message
   // let entity = handleMessageWithEntities(received_message);
-
   // if (entity.name === "datetime") {
   //   await FacebookService.askUserForPhoneNumber(sender_psid);
   // } else if (entity.name === "phone_number") {
@@ -142,21 +139,18 @@ let handleMessage = async (sender_psid, received_message) => {
 
 //return entity name, value etc... as object
 let handleMessageWithEntities = (message) => {
-  const entitiesArray = ["datetime", "phone_number"];
+  let entitiesArr = ["datetime", "phone_number"];
   let entityChosen = "";
   // let data = {}; //data is an object saving name and value of the entity
-  entitiesArray.forEach((name) => {
+  entitiesArr.forEach((name) => {
     let entity = firstEntity(message.nlp, name);
     if (entity && entity.confidence > 0.8) {
       entityChosen = name;
-      // data.value = entity.value;
     }
   });
   console.log("-------------------------");
   console.log(entityChosen);
   console.log("-------------------------");
-  // data.name = entityChosen;
-  // return data;
 };
 
 //return the entity in message
