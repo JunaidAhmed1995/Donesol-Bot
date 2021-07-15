@@ -164,7 +164,7 @@ let handleMessage = async (sender_psid, received_message) => {
     }
 
     //default reply here
-    await FacebookService.callSendAPI(sender_psid, response);
+    // await FacebookService.callSendAPI(sender_psid, response);
   }
 };
 
