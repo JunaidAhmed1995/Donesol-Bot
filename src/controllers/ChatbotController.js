@@ -50,7 +50,7 @@ let postWebHook = (req, res) => {
   let body = req.body;
 
   console.log("----------------------------------------");
-  console.log(body);
+  console.log("==body==", body);
   console.log("----------------------------------------");
 
   // Checks this is an event from a page subscription
