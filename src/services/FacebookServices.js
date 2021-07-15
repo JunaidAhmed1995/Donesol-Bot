@@ -735,9 +735,9 @@ let showUserDetails = (sender_psid, user) => {
         | ---    <b>${username} Appointment Details</b> --- |
         | ------------------------------------------------------------ |
         | 1. Username: <b>${username}</b> |
-        | 2. Phone Number: <b>${user.phoneNumber}</b> |
-        | 3. Appointment Time: <b>${user.appointmentTime}</b> |
-        | 4. Appointment Created At: <b>${user.createdAt}</b> |
+        | 2. Phone Number: <b>${user.userPhoneNumber}</b> |
+        | 3. Appointment Time: <b>${user.userAppointmentTime}</b> |
+        | 4. Appointment Created At: <b>${user.userCreatedAt}</b> |
         | ------------------------------------------------------------ |
     </pre>`,
       };
