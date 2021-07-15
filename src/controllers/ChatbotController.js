@@ -49,10 +49,6 @@ let getWebHook = (req, res) => {
 let postWebHook = (req, res) => {
   let body = req.body;
 
-  console.log("----------------------------------------");
-  console.log("==body==", body);
-  console.log("----------------------------------------");
-
   // Checks this is an event from a page subscription
   if (body.object === "page") {
     // Iterates over each entry - there may be multiple if batched
@@ -87,6 +83,10 @@ let postWebHook = (req, res) => {
       // Get the sender PSID
       let sender_psid = webhook_event.sender.id;
       console.log("Sender PSID: " + sender_psid);
+      let receiver_id = webhook_event.recipient.id;
+      console.log("----------------------------------------");
+      console.log("==recipient.id==", receiver_id);
+      console.log("----------------------------------------");
 
       // Check if the event is a message or postback and
       // pass the event to the appropriate handler function
