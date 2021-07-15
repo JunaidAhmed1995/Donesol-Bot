@@ -155,9 +155,9 @@ let handleMessage = async (sender_psid, received_message) => {
     //check messages here
     if (received_message && received_message.text) {
       let text = received_message.text.toLowerCase();
-      productArray.forEach((product) => {
+      productArray.forEach(async (product) => {
         if (text.includes(product)) {
-          FacebookService.welcomeNewUser(sender_psid);
+          await FacebookService.welcomeNewUser(sender_psid);
           return;
         }
       });
