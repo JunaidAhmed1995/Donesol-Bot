@@ -13,6 +13,9 @@ let user = {
   userCreatedAt: "",
 };
 
+//array of dummy products data for testing
+const productArray = ["prod1", "prod2", "prod3", "prod4", "prod5"];
+
 //function for testing the port
 let homePage = (req, res) => {
   return res.send("Hello Heroku, I am successfully deployed my Node.js App");
@@ -152,10 +155,12 @@ let handleMessage = async (sender_psid, received_message) => {
     //check messages here
     if (received_message && received_message.text) {
       let text = received_message.text.toLowerCase();
-      if (text.includes("restart")) {
-        await FacebookService.welcomeNewUser(sender_psid);
-        return;
-      }
+      productArray.forEach((product) => {
+        if (text.includes(product)) {
+          await FacebookService.welcomeNewUser(sender_psid);
+          return;
+        }
+      });
     }
 
     //default reply here
