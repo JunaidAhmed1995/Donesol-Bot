@@ -74,7 +74,8 @@ let postWebHook = (req, res) => {
         }
 
         return;
-      } else if (entry.messaging) {
+      }
+      if (entry.messaging) {
         // Gets the message. entry.messaging is an array, but
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
@@ -95,7 +96,9 @@ let postWebHook = (req, res) => {
         } else if (webhook_event.postback) {
           handlePostback(sender_psid, webhook_event.postback);
         }
-      } else if (entry.changes) {
+      }
+      if (entry.changes) {
+        console.log("+-----In Changes Block----+");
         FacebookService.processComments(entry.changes[0].value);
       }
     });

@@ -753,10 +753,10 @@ let processComments = (userComment) => {
   return new Promise((resolve, reject) => {
     try {
       let commentId = "";
-      if (userComment.item === "post") {
+      if (userComment.item == "post") {
         commentId = userComment.post_id;
       }
-      if (userComment.item === "comment") {
+      if (userComment.item == "comment") {
         commentId = userComment.comment_id;
       }
       console.log(" ===comment_id=== ", commentId);
