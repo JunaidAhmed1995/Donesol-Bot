@@ -49,12 +49,9 @@ let getWebHook = (req, res) => {
 let postWebHook = (req, res) => {
   let body = req.body;
 
-  console.log("==What's in Body== ", body);
-
   // Checks this is an event from a page subscription
   if (body.object === "page") {
     // Iterates over each entry - there may be multiple if batched
-    console.log("==What's in Body-Entry== ", body.entry);
     body.entry.forEach(function (entry) {
       //check the incoming message from Primary app or not?
       //if Secondary app, EXIT.
@@ -67,30 +64,18 @@ let postWebHook = (req, res) => {
             webhook_standby.message.text === "back" ||
             webhook_standby.message.text === "exit"
           ) {
-            //call the function to return conversation to Primary App (bot)
-            // FacebookService.passThreadControl(
-            //   webhook_standby.sender.id,
-            //   "primary"
-            // );
             FacebookService.takeThreadControl(webhook_standby.sender.id);
           }
         }
 
         return;
-      }
-      if (entry.messaging) {
+      } else if (entry.messaging) {
         // Gets the message. entry.messaging is an array, but
         // will only ever contain one message, so we get index 0
         let webhook_event = entry.messaging[0];
-        console.log(webhook_event);
 
         // Get the sender PSID
         let sender_psid = webhook_event.sender.id;
-        console.log("Sender PSID: " + sender_psid);
-        let receiver_id = webhook_event.recipient.id;
-        console.log("----------------------------------------");
-        console.log("==recipient.id==", receiver_id);
-        console.log("----------------------------------------");
 
         // Check if the event is a message or postback and
         // pass the event to the appropriate handler function
@@ -99,8 +84,7 @@ let postWebHook = (req, res) => {
         } else if (webhook_event.postback) {
           handlePostback(sender_psid, webhook_event.postback);
         }
-      }
-      if (entry.changes) {
+      } else if (entry.changes) {
         console.log("+-----In Changes Block----+");
         FacebookService.processComments(entry.changes[0].value);
       }
