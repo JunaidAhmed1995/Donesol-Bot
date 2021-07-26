@@ -640,6 +640,7 @@ let makeAppointmentWithArchitect = (sender_psid) => {
         text: `Hi ${username}, What time and date is suitable for you?`,
       };
       await callSendAPI(sender_psid, response);
+      resolve("Get Time and date from user");
     } catch (e) {
       reject(e);
     }
@@ -747,6 +748,43 @@ let showUserDetails = (sender_psid, user) => {
   });
 };
 
+// Processes incoming posts to page to get ID of the poster
+let processComments = (userComment) => {
+  return new Promise((resolve, reject) => {
+    try {
+      let commentId = "";
+      if (userComment.item === "post") {
+        commentId = userComment.post_id;
+      }
+      if (userComment.item === "comment") {
+        commentId = userComment.comment_id;
+      }
+      console.log(" ===comment_id=== ", commentId);
+      let encode_message = encodeURIComponent(comment.message);
+      console.log(" ===Encoded Message=== ", encode_message);
+      let message_body = `Thank you for your question, to better assist you I am passing you to our support department`;
+      let request_body = {
+        message: message_body,
+      };
+      request(
+        {
+          uri: `https://graph.facebook.com/v11.0/${commentId}/private_replies`,
+          qs: { access_token: PAGE_ACCESS_TOKEN },
+          method: "POST",
+          json: request_body,
+        },
+        (err, res) => {
+          if (!err) {
+            resolve("Private Reply Sent");
+          }
+        }
+      );
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 //now exporting functions as a object [property: value]
 module.exports = {
   getInitialSetup: getInitialSetup,
@@ -768,4 +806,5 @@ module.exports = {
   askUserForPhoneNumber: askUserForPhoneNumber,
   doneAppointmentWithArchitect: doneAppointmentWithArchitect,
   showUserDetails: showUserDetails,
+  processComments: processComments,
 };
