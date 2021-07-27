@@ -157,15 +157,14 @@ let handleMessage = async (sender_psid, received_message) => {
           await FacebookService.showCategories(sender_psid);
           return;
         }
+        //default reply here
+        response = {
+          text: `I didn't get you. Donesol-bot is going restart itself`,
+        };
+        await FacebookService.callSendAPI(sender_psid, response);
+        await FacebookService.welcomeNewUser(sender_psid);
       });
     }
-
-    //default reply here
-    response = {
-      text: `I didn't get you. Donesol-bot is going restart itself`,
-    };
-    await FacebookService.callSendAPI(sender_psid, response);
-    await FacebookService.welcomeNewUser(sender_psid);
   }
 };
 
