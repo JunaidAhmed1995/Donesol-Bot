@@ -518,7 +518,7 @@ let showAnimals = (sender_psid) => {
               //first
               {
                 title: "COW",
-                image_url: "https://placeimg.com/300/200/animals/sepia",
+                image_url: "https://tinyurl.com/ayamxjuv",
                 subtitle: "$99999",
                 default_action: {
                   type: "web_url",
@@ -546,7 +546,7 @@ let showAnimals = (sender_psid) => {
               //second
               {
                 title: "GOAT",
-                image_url: "https://placeimg.com/300/200/nature/sepia",
+                image_url: "https://tinyurl.com/jpv8sphe",
                 subtitle: "$999",
                 default_action: {
                   type: "web_url",
