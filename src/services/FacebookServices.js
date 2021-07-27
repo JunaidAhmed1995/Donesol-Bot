@@ -258,7 +258,7 @@ let showCategories = (sender_psid) => {
               //first
               {
                 title: "ANIMALS!",
-                image_url: "https://placeimg.com/300/200/animals",
+                image_url: "https://tinyurl.com/4xd9e5zn",
                 subtitle: "A heart beats in animals the same as in us",
                 default_action: {
                   type: "web_url",
@@ -286,7 +286,7 @@ let showCategories = (sender_psid) => {
               //second
               {
                 title: "NATURE!",
-                image_url: "https://placeimg.com/300/200/nature",
+                image_url: "https://tinyurl.com/88n6sj29",
                 subtitle: "Join hands to save environment",
                 default_action: {
                   type: "web_url",
@@ -314,7 +314,7 @@ let showCategories = (sender_psid) => {
               //third
               {
                 title: "ARCHITECTURE!",
-                image_url: "https://placeimg.com/300/200/arch",
+                image_url: "https://tinyurl.com/vedr8v3v",
                 subtitle: "Let the building speak",
                 default_action: {
                   type: "web_url",
@@ -597,7 +597,7 @@ let showNature = (sender_psid) => {
               //first
               {
                 title: "Ha Long Bay - Vietnam",
-                image_url: "https://placeimg.com/300/200/nature",
+                image_url: "https://tinyurl.com/wnhk45d3",
                 subtitle:
                   "The extraordinary Ha Long Bay is located in the far north of Vietnam, near the border to China. ",
                 default_action: {
@@ -626,7 +626,7 @@ let showNature = (sender_psid) => {
               //second
               {
                 title: "The Colosseum - Italy",
-                image_url: "https://placeimg.com/300/200/nature/sepia",
+                image_url: "https://tinyurl.com/uefhymww",
                 subtitle:
                   "When falls the Coliseum, Rome shall fall; And when Rome falls--the World",
                 default_action: {
