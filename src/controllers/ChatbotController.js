@@ -158,14 +158,13 @@ let handleMessage = async (sender_psid, received_message) => {
           return;
         }
       });
-      return;
+      //default reply here
+      let response = {
+        text: `I didn't get you. Donesol-bot is going to restart itself`,
+      };
+      await FacebookService.callSendAPI(sender_psid, response);
+      await FacebookService.welcomeNewUser(sender_psid);
     }
-    //default reply here
-    const response = {
-      text: `I didn't get you. Donesol-bot is going to restart itself`,
-    };
-    await FacebookService.callSendAPI(sender_psid, response);
-    await FacebookService.welcomeNewUser(sender_psid);
   }
 };
 
