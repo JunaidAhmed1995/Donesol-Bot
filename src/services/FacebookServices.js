@@ -583,6 +583,87 @@ let showAnimals = (sender_psid) => {
   });
 };
 
+//showing different Nature's when user click on show Nature button in Categories Carousel
+let showNature = (sender_psid) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      //sending a generic template message
+      let response = {
+        attachment: {
+          type: "template",
+          payload: {
+            template_type: "generic",
+            elements: [
+              //first
+              {
+                title: "Ha Long Bay - Vietnam",
+                image_url: "https://placeimg.com/300/200/nature",
+                subtitle:
+                  "The extraordinary Ha Long Bay is located in the far north of Vietnam, near the border to China. ",
+                default_action: {
+                  type: "web_url",
+                  url: "http://www.vietnam-guide.com/ha-long-bay/",
+                  webview_height_ratio: "tall",
+                },
+                buttons: [
+                  {
+                    type: "web_url",
+                    url: "http://www.vietnam-guide.com/ha-long-bay/",
+                    title: "View Now",
+                  },
+                  {
+                    type: "postback",
+                    title: "Back to Categories",
+                    payload: "BACK_TO_CATEGORIES_PAYLOAD",
+                  },
+                  {
+                    type: "postback",
+                    title: "Main Menu",
+                    payload: "MAIN_MENU_PAYLOAD",
+                  },
+                ],
+              },
+              //second
+              {
+                title: "The Colosseum - Italy",
+                image_url: "https://placeimg.com/300/200/nature/sepia",
+                subtitle:
+                  "When falls the Coliseum, Rome shall fall; And when Rome falls--the World",
+                default_action: {
+                  type: "web_url",
+                  url: "https://www.rome.net/colosseum",
+                  webview_height_ratio: "tall",
+                },
+                buttons: [
+                  {
+                    type: "web_url",
+                    url: "https://www.rome.net/colosseum",
+                    title: "View Now",
+                  },
+                  {
+                    type: "postback",
+                    title: "Back to Categories",
+                    payload: "BACK_TO_CATEGORIES_PAYLOAD",
+                  },
+                  {
+                    type: "postback",
+                    title: "Main Menu",
+                    payload: "MAIN_MENU_PAYLOAD",
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      };
+      await callSendAPI(sender_psid, response);
+      resolve("Show Animals as Carousel");
+    } catch (e) {
+      reject(e);
+    }
+  });
+};
+
 //get back to categories Carousel
 let goBackToCategories = (sender_psid) => {
   return new Promise(async (resolve, reject) => {
@@ -797,6 +878,7 @@ module.exports = {
   showLookupOrder: showLookupOrder,
   requestTalkToAgent: requestTalkToAgent,
   showAnimals: showAnimals,
+  showNature: showNature,
   goBackToCategories: goBackToCategories,
   setOrderInfoByWebView: setOrderInfoByWebView,
   goBackToMainMenu: goBackToMainMenu,

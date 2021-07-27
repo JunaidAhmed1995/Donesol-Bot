@@ -208,6 +208,7 @@ let handlePostback = async (sender_psid, received_postback) => {
       await FacebookService.showAnimals(sender_psid);
       break;
     case "SHOW_NATURE_PAYLOAD":
+      await FacebookService.showNature(sender_psid);
       break;
     case "MAKE_APPOINTMENT_WITH_ARCHITECT_PAYLOAD":
       await FacebookService.makeAppointmentWithArchitect(sender_psid);
